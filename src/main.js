@@ -3,6 +3,7 @@ import 'material-icons/iconfont/material-icons.css'
 import './assets/tailwind.css'
 import { initializeFirebase } from './api/configuration/firebase'
 import store from './store'
+import router from './router'
 import App from './App.vue'
 
 Vue.config.productionTip = false
@@ -11,5 +12,8 @@ initializeFirebase()
 
 new Vue({
   store,
-  render: (h) => h(App),
+  router,
+  render: function (h) {
+    return h(App)
+  },
 }).$mount('#app')

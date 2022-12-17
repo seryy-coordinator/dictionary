@@ -1,18 +1,7 @@
 <template>
   <div id="app">
-    <ExpressionAdding />
+    <RouterView />
   </div>
 </template>
-
-<script>
-import ExpressionAdding from './components/ExpressionAdding.vue'
-
-export default {
-  name: 'App',
-  components: {
-    ExpressionAdding,
-  },
-}
-</script>
 
 <style></style>
