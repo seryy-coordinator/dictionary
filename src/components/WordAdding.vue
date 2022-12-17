@@ -5,7 +5,6 @@
       <div class="flex items-center justify-center gap-2">
         <BaseInput v-model="newWord" class="border border-gray-300" @enter="addNewWord()" />
         <BaseButton @click="addNewWord()">Add</BaseButton>
-        <BaseButton :disabled="saving" @click="test()">Test</BaseButton>
       </div>
     </div>
     <hr class="my-1" />
@@ -17,37 +16,11 @@
 
 <script>
 import { WordsCollection } from '../api/collections'
+import { dictionarySection, dictionarySections } from '../api/types/section'
 
 import BaseButton from './base/BaseButton.vue'
 import BaseInput from './base/BaseInput.vue'
 import BaseCheckboxGroup from './base/BaseCheckboxGroup.vue'
-
-const dictionarySection = {
-  LEXICON: 'lexicon',
-  PHRASE: 'phrase',
-  PRONUNCIATION: 'pronunciation',
-}
-
-const dictionarySections = [
-  {
-    value: dictionarySection.LEXICON,
-    label: 'Lexicon',
-    icon: 'psychology',
-    image: '',
-  },
-  {
-    value: dictionarySection.PHRASE,
-    label: 'Phrase',
-    icon: 'translate',
-    image: '',
-  },
-  {
-    value: dictionarySection.PRONUNCIATION,
-    label: 'Pronunciation',
-    icon: 'headphones',
-    image: '',
-  },
-]
 
 export default {
   name: 'WordAdding',
@@ -60,22 +33,23 @@ export default {
     dictionarySections,
     selectedSections: [dictionarySection.LEXICON],
     newWord: '',
+    selectedTranslate: '',
     dictionary: [],
     saving: false,
   }),
   methods: {
-    addNewWord() {
-      this.dictionary.push(this.newWord)
-      this.newWord = ''
-    },
-    async test() {
+    async addNewWord() {
       this.saving = true
 
       const data = {
-        word: 'test',
+        word: this.newWord,
         user: 'Serg',
+        sections: [],
       }
-      await WordsCollection.create(data)
+      // use fibonacci number for rate
+      const word = await WordsCollection.create(data)
+      this.dictionary.push(word)
+      this.newWord = ''
       this.saving = false
     },
   },

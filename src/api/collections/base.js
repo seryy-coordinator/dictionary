@@ -1,5 +1,8 @@
-import { collection, addDoc, getDocs } from 'firebase/firestore/lite'
+import { collection, addDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore/lite'
+
 import { getFirestore } from '../utilities/firestore.js'
+
+const getElement = (snapshot) => ({ ...snapshot.data(), _id: snapshot.id })
 
 export default class Base {
   constructor(collectionPath) {
@@ -14,22 +17,19 @@ export default class Base {
     return collection(this.firestore, this.collectionPath)
   }
 
-  async create(data, id = null /*, returnData = false*/) {
-    console.log('create')
-    console.log(this.collectionRef)
+  async create(data, id = null, returnData = false) {
     try {
-      let docId = id
-      if (docId) {
-        // await this.collectionRef.doc(docId).set(data)
+      // let docId = id
+      let docRef
+      if (id) {
+        docRef = doc(this.collectionRef, id)
+        await setDoc(docRef, data)
       } else {
-        const docRef = await addDoc(this.collectionRef, data)
-        docId = docRef.id
-        console.log(docId)
+        docRef = await addDoc(this.collectionRef, data)
+        // docId = docRef.id
       }
-      // return returnData ? this.read(docId) : true
-      return true
+      return returnData ? this.read(docRef) : true
     } catch (error) {
-      console.log('!!!')
       throw new Error(error)
     }
   }
@@ -38,13 +38,15 @@ export default class Base {
   //   await this.firestore.collection(this.collectionPath).doc(id).update(data)
   // }
 
-  // read(id) {
-  //   try {
-  //     return this.collectionRef.doc(id).get()
-  //   } catch (error) {
-  //     throw new Error(error)
-  //   }
-  // }
+  async read(reference) {
+    try {
+      const docRef = typeof reference === 'string' ? doc(this.collectionRef, reference) : reference
+      const snapshot = await getDoc(docRef)
+      return getElement(snapshot)
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
 
   // delete(id) {
   //   try {
@@ -143,7 +145,7 @@ export default class Base {
   async getAll() {
     try {
       const snapshot = await getDocs(this.collectionRef)
-      return snapshot.docs.map((doc) => doc.data())
+      return snapshot.docs.map(getElement)
     } catch (error) {
       throw new Error(error)
     }

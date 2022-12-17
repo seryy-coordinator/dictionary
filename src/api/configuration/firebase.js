@@ -18,5 +18,4 @@ export function initializeFirebase() {
   const app = initializeApp(firebaseConfig)
   const firestore = getFirestore(app)
   initFirestore(firestore)
-  console.log('firestore', firestore)
 }
