@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <HelloWorld />
+    <WordAdding />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import WordAdding from './components/WordAdding.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    WordAdding,
   },
 }
 </script>
