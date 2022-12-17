@@ -1,5 +1,5 @@
 import BaseCollection from './base'
 
-const WordsCollection = new BaseCollection('words')
+const ExpressionsCollection = new BaseCollection('expressions')
 
-export { BaseCollection, WordsCollection }
+export { BaseCollection, ExpressionsCollection }

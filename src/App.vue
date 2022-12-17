@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <WordAdding />
+    <ExpressionAdding />
   </div>
 </template>
 
 <script>
-import WordAdding from './components/WordAdding.vue'
+import ExpressionAdding from './components/ExpressionAdding.vue'
 
 export default {
   name: 'App',
   components: {
-    WordAdding,
+    ExpressionAdding,
   },
 }
 </script>

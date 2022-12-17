@@ -19,14 +19,12 @@ export default class Base {
 
   async create(data, id = null, returnData = false) {
     try {
-      // let docId = id
       let docRef
       if (id) {
         docRef = doc(this.collectionRef, id)
         await setDoc(docRef, data)
       } else {
         docRef = await addDoc(this.collectionRef, data)
-        // docId = docRef.id
       }
       return returnData ? this.read(docRef) : true
     } catch (error) {

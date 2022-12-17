@@ -1,5 +1,5 @@
-export const schema = (data) => ({
-  source: data.source || '',
+export const schema = (data = {}) => ({
+  target: data.target || '',
   translate: data.translate || '',
   userId: data.userId || '',
   dictionaryId: data.dictionaryId || '',
