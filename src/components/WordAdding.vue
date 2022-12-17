@@ -5,6 +5,7 @@
       <div class="flex items-center justify-center gap-2">
         <BaseInput v-model="newWord" class="border border-gray-300" @enter="addNewWord()" />
         <BaseButton @click="addNewWord()">Add</BaseButton>
+        <BaseButton :disabled="saving" @click="test()">Test</BaseButton>
       </div>
     </div>
     <hr class="my-1" />
@@ -15,6 +16,8 @@
 </template>
 
 <script>
+import { WordsCollection } from '../api/collections'
+
 import BaseButton from './base/BaseButton.vue'
 import BaseInput from './base/BaseInput.vue'
 import BaseCheckboxGroup from './base/BaseCheckboxGroup.vue'
@@ -58,11 +61,22 @@ export default {
     selectedSections: [dictionarySection.LEXICON],
     newWord: '',
     dictionary: [],
+    saving: false,
   }),
   methods: {
     addNewWord() {
       this.dictionary.push(this.newWord)
       this.newWord = ''
+    },
+    async test() {
+      this.saving = true
+
+      const data = {
+        word: 'test',
+        user: 'Serg',
+      }
+      await WordsCollection.create(data)
+      this.saving = false
     },
   },
 }
