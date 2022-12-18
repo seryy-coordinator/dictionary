@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore/lite'
+import { collection, addDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
 
 import { getFirestore } from '../utilities/firestore.js'
 
@@ -32,15 +32,21 @@ export default class Base {
     }
   }
 
-  // async update(id, data) {
-  //   await this.firestore.collection(this.collectionPath).doc(id).update(data)
-  // }
+  async set(id, data) {
+    const docRef = doc(this.collectionRef, id)
+    await setDoc(docRef, data)
+  }
+
+  async update(id, data) {
+    const docRef = doc(this.collectionRef, id)
+    await updateDoc(docRef, data)
+  }
 
   async read(reference) {
     try {
       const docRef = typeof reference === 'string' ? doc(this.collectionRef, reference) : reference
       const snapshot = await getDoc(docRef)
-      return getElement(snapshot)
+      return snapshot.exists() ? getElement(snapshot) : null
     } catch (error) {
       throw new Error(error)
     }

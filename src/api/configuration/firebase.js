@@ -3,6 +3,7 @@ import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore/lite'
 
 import { initFirestore } from '../utilities/firestore.js'
+import { initAuth } from '../utilities/auth.js'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDa5mKTcgnSlupOvrLSH9v-a1VfeK_x_54',
@@ -15,9 +16,18 @@ const firebaseConfig = {
   measurementId: 'G-6FF3KXWFP3',
 }
 
-export function initializeFirebase() {
-  const app = initializeApp(firebaseConfig)
-  const firestore = getFirestore(app)
-  initFirestore(firestore)
-  getAuth(app)
+export async function initializeFirebase() {
+  return new Promise((resolve) => {
+    const app = initializeApp(firebaseConfig)
+
+    const auth = getAuth(app)
+    initAuth(auth)
+
+    const firestore = getFirestore(app)
+    initFirestore(firestore)
+
+    auth.onAuthStateChanged((user) => {
+      resolve(user)
+    })
+  })
 }
