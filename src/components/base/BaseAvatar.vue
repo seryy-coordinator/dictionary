@@ -48,7 +48,7 @@ export default {
       return sizes[this.size]
     },
     getInitials() {
-      const getName = this.content.trim().split(' ')
+      const getName = this.name.trim().split(' ')
       const initials = getName.reduce((acc, cur, index) => {
         if (index === 0 || index === getName.length - 1) {
           acc = `${acc}${cur.charAt(0).toUpperCase()}`

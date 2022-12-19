@@ -2,7 +2,6 @@ import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { make } from 'vuex-pathify'
 
 import { schema } from '../api/types/user'
-import { role } from '../api/types/role'
 import { getAuth } from '../api/utilities/auth'
 import { UsersCollection } from '../api/collections'
 
@@ -76,13 +75,13 @@ const actions = {
       name: displayName,
       email,
       picture: photoURL,
-      role: role.STUDENT,
+      role: '',
     })
     await UsersCollection.set(_id, newUser)
     commit('SET_USER', newUser)
   },
   async updateUserRole({ commit, getters }, role) {
-    await UsersCollection.set(getters.user._id, { role })
+    await UsersCollection.update(getters.user._id, { role })
 
     commit('UPDATE_USER', { role })
   },
