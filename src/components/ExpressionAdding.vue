@@ -9,7 +9,9 @@
     </div>
     <hr class="my-1" />
     <ul>
-      <li v-for="expression in getExpressions" :key="expression._id">{{ expression.target }}</li>
+      <li v-for="expression in getExpressions" :key="expression._id">
+        {{ expression.target }} <BaseButton @click="voiceText(expression.target)">Lissen</BaseButton>
+      </li>
     </ul>
   </div>
 </template>
@@ -21,6 +23,7 @@ import { dictionarySection, dictionarySections } from '../api/types/section'
 import BaseButton from './base/BaseButton.vue'
 import BaseInput from './base/BaseInput.vue'
 import BaseCheckboxGroup from './base/BaseCheckboxGroup.vue'
+import { voiceText } from '../api/utilities/speech'
 
 export default {
   name: 'ExpressionAdding',
@@ -56,6 +59,9 @@ export default {
       this.saving = false
     },
     ...call('expressions', ['addExpression', 'fetchAll']),
+    voiceText(text) {
+      voiceText(text)
+    },
   },
 }
 </script>
