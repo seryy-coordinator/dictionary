@@ -1,26 +1,28 @@
-const U = new SpeechSynthesisUtterance()
-
-let voices = speechSynthesis.getVoices()
+const utterance = new SpeechSynthesisUtterance()
 
 speechSynthesis.onvoiceschanged = () => {
-  voices = speechSynthesis.getVoices()
-  initializeSpeech()
+  initializeUtterance()
 }
 
-function initializeSpeech() {
-  const voice = voices.find((voice) => voice.name === 'Google UK English Female')
-  U.voice = voice
-  U.lang = voice.lang
-  U.volume = 1
-  U.rate = 1
-  U.pitch = 1
+function getVoice(name = 'Google UK English Female') {
+  const voices = speechSynthesis.getVoices()
+  return voices.find((voice) => voice.name === name)
+}
+
+function initializeUtterance() {
+  const voice = getVoice()
+  utterance.voice = voice
+  utterance.lang = voice.lang
+  utterance.volume = 1
+  utterance.rate = 1
+  utterance.pitch = 1
 }
 
 function voiceText(text) {
   const trimmed = text.trim()
   if (!trimmed) return
-  U.text = trimmed
-  speechSynthesis.speak(U)
+  utterance.text = trimmed
+  speechSynthesis.speak(utterance)
 }
 
 export { voiceText }
