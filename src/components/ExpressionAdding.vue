@@ -5,9 +5,21 @@
       <SearchInput :collection="getExpressions" @select-new="fetchTranslates" @select="updateExpression" />
     </div>
     <hr class="my-1" />
-    <ul>
-      <li v-for="expression in getExpressions" :key="expression._id">
-        {{ expression.target }} <BaseButton @click="voiceText(expression.target)">Lissen</BaseButton>
+    <ul class="py-4 px-8">
+      <li
+        v-for="expression in getExpressions"
+        :key="expression._id"
+        class="flex items-center my-1 p-1 gap-1 hover:bg-gray-50"
+      >
+        <strong class="font-medium">{{ expression.target }}</strong>
+        <BaseButton
+          theme="simple"
+          icon="volume_up"
+          class="text-blue-400 hover:text-blue-500"
+          @click="voiceText(expression.target)"
+        />
+        <span class="mx-1">-</span>
+        <span class="text-gray-600">{{ expression.translate }}</span>
       </li>
     </ul>
   </div>

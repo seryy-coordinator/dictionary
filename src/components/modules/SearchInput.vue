@@ -3,6 +3,7 @@
     <div class="flex items-center justify-center h-12">
       <BaseInput v-model="searchText" class="h-full border border-gray-300 w-80" @enter="selectNewExpression()" />
       <BaseButton
+        :disabled="!this.searchText"
         theme="simple"
         icon="search"
         class="h-full border-r border-t border-b border-gray-300 bg-gray-100 px-2"
@@ -19,7 +20,8 @@
         class="my-1 py-2 px-3 hover:bg-gray-50 cursor-pointer"
         @click="selectExpression(expression)"
       >
-        {{ expression.target }}
+        <p class="leading-4">{{ expression.target }}</p>
+        <p class="text-xs text-gray-600">{{ expression.translate }}</p>
       </li>
     </ul>
   </div>
@@ -54,8 +56,10 @@ export default {
   },
   methods: {
     selectNewExpression() {
-      this.$emit('select-new', this.searchText)
-      this.searchText = ''
+      if (this.searchText !== '') {
+        this.$emit('select-new', this.searchText)
+        this.searchText = ''
+      }
     },
     selectExpression(expression) {
       this.$emit('select', expression)
