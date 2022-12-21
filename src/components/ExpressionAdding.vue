@@ -2,10 +2,7 @@
   <div>
     <div class="flex flex-col items-center p-4 gap-2">
       <BaseCheckboxGroup v-model="selectedSections" :options="dictionarySections" class="dictionary-sections" />
-      <div class="flex items-center justify-center gap-2">
-        <BaseInput v-model="searchText" class="border border-gray-300" @enter="addNewExpression()" />
-        <BaseButton @click="addNewExpression()">Add</BaseButton>
-      </div>
+      <SearchInput :collection="getExpressions" @select-new="fetchTranslates" @select="updateExpression" />
     </div>
     <hr class="my-1" />
     <ul>
@@ -20,17 +17,16 @@
 import { call, get } from 'vuex-pathify'
 
 import { dictionarySection, dictionarySections } from '../api/types/section'
-import BaseButton from './base/BaseButton.vue'
-import BaseInput from './base/BaseInput.vue'
-import BaseCheckboxGroup from './base/BaseCheckboxGroup.vue'
+import { BaseButton, BaseCheckboxGroup } from './base'
+import SearchInput from './modules/SearchInput.vue'
 import { voiceText } from '../api/utilities/speech'
 
 export default {
   name: 'ExpressionAdding',
   components: {
     BaseButton,
-    BaseInput,
     BaseCheckboxGroup,
+    SearchInput,
   },
   data: () => ({
     dictionarySections,
@@ -48,6 +44,10 @@ export default {
     this.fetchAll()
   },
   methods: {
+    fetchTranslates(expression) {
+      console.log(expression)
+      // ToDo fetch from API
+    },
     async addNewExpression() {
       this.saving = true
       await this.addExpression({
@@ -58,10 +58,12 @@ export default {
       this.searchText = ''
       this.saving = false
     },
-    ...call('expressions', ['addExpression', 'fetchAll']),
-    voiceText(text) {
-      voiceText(text)
+    updateExpression(expression) {
+      console.log(expression)
+      // ToDo update
     },
+    voiceText,
+    ...call('expressions', ['addExpression', 'fetchAll']),
   },
 }
 </script>
