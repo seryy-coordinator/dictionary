@@ -5,7 +5,8 @@
   "scripts": {
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "dev": "vue-cli-service serve"
+    "dev": "vue-cli-service serve",
+    "deploy": "firebase deploy"
   },
   "dependencies": {
     "autoprefixer": "^9.8.8",

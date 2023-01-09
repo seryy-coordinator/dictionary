@@ -14,6 +14,9 @@ const urls = {
 
 let token = null;
 
+/**
+ * Authenticate to Lingvo API.
+ */
 async function authenticate() {
   const headers = {
     Authorization: `Basic ${apiKey}`,
@@ -24,9 +27,16 @@ async function authenticate() {
 }
 
 // ToDo will implemented later
-function getTranslation() {}
+// function getTranslation() {}
 
-async function getMiniCard({ text }) {
+/**
+ * Get short information about translation.
+ * @param {string} text The text for translation.
+ * @param {string} srcLang The code of source language.
+ * @param {string} dstLang The code of destination language.
+ * @return {object} The short information.
+ */
+async function getMiniCard({ text, srcLang = 1033, dstLang = 1049 }) {
   if (!token) {
     await authenticate();
   }
@@ -34,13 +44,13 @@ async function getMiniCard({ text }) {
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
   };
-  const url = urls.getMiniCardUrl({ text, srcLang: 1033, dstLang: 1049 });
+  const url = urls.getMiniCardUrl({ text, srcLang, dstLang });
   const result = await axios.get(url, { headers });
   return getCard(result.data.Translation);
 }
 
 // ToDo will implemented later
-function getSuggest() {}
+// function getSuggest() {}
 
 module.exports = {
   getMiniCard,
