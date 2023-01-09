@@ -2,7 +2,7 @@
   <div>
     <div class="flex flex-col items-center p-4 gap-2">
       <BaseCheckboxGroup v-model="selectedSections" :options="dictionarySections" class="dictionary-sections" />
-      <SearchInput :collection="getExpressions" @select-new="fetchTranslates" @select="updateExpression" />
+      <SearchInput :collection="getExpressions" @select-new="addNewExpression" @select="updateExpression" />
     </div>
     <hr class="my-1" />
     <ul class="py-4 px-8">
@@ -46,6 +46,7 @@ export default {
     searchText: '',
     translate: '',
     saving: false,
+    suggestions: [],
   }),
   computed: {
     ...get('expressions', {
@@ -56,15 +57,11 @@ export default {
     this.fetchAll()
   },
   methods: {
-    fetchTranslates(expression) {
-      console.log(expression)
-      // ToDo fetch from API
-    },
-    async addNewExpression() {
+    async addNewExpression({ target, translate }) {
       this.saving = true
       await this.addExpression({
-        target: this.searchText,
-        translate: this.translate,
+        target,
+        translate,
         sections: this.selectedSections,
       })
       this.searchText = ''

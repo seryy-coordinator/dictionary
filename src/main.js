@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import 'material-icons/iconfont/material-icons.css'
 import './assets/tailwind.css'
-import { initializeFirebase } from './api/configuration/firebase'
+import { initializeFirebase } from './api/firebase/initialize'
 import store from './store'
 import router from './router'
 import App from './App.vue'

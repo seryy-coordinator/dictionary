@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 
 import store from '../store'
 import { roles } from '../api/types/role'
-import { getAuth } from '../api/utilities/auth'
+import { getAuth } from '../api/firebase/auth'
 
 import Authenticate from '../views/Authenticate.vue'
 import Settings from '../views/Settings.vue'

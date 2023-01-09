@@ -1,6 +1,6 @@
 import { collection, addDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
 
-import { getFirestore } from '../utilities/firestore.js'
+import { getFirestore } from '../firebase/firestore.js'
 
 const getElement = (snapshot) => ({ ...snapshot.data(), _id: snapshot.id })
 

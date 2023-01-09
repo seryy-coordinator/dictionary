@@ -2,7 +2,7 @@ import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { make } from 'vuex-pathify'
 
 import { schema } from '../api/types/user'
-import { getAuth } from '../api/utilities/auth'
+import { getAuth } from '../api/firebase/auth'
 import { UsersCollection } from '../api/collections'
 
 const state = () => ({
