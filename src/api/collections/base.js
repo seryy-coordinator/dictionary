@@ -1,4 +1,15 @@
-import { collection, addDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore/lite'
+import {
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+  query,
+  limit,
+  where,
+} from 'firebase/firestore/lite'
 
 import { getFirestore } from '../firebase/firestore.js'
 
@@ -68,23 +79,24 @@ export default class Base {
   //   }
   // }
 
-  // async query({ options, limit = null }) {
-  //   const collection = this.collectionRef
-  //   let query = collection
-  //   options.forEach((option) => {
-  //     query = query.where(...option)
-  //   })
-  //   if (limit) {
-  //     query = query.limit(limit)
-  //   }
-  //   const result = await query.get()
-  //   return result.docs.map((ref) => {
-  //     return {
-  //       _id: ref.id,
-  //       ...ref.data(),
-  //     }
-  //   })
-  // }
+  async query({ options, limit: limitValue = null }) {
+    let condition = options.map((option) => where(...option))
+    if (limitValue) {
+      condition = [...condition, limit(limitValue)]
+    }
+    let queryRef = query(this.collectionRef, ...condition)
+    const snapshot = await getDocs(queryRef)
+    return snapshot.docs.map(getElement)
+  }
+
+  async getAll() {
+    try {
+      const snapshot = await getDocs(this.collectionRef)
+      return snapshot.docs.map(getElement)
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
 
   // listener(callback) {
   //   const collection = this.collectionRef
@@ -145,15 +157,6 @@ export default class Base {
   //     }
   //   })
   // }
-
-  async getAll() {
-    try {
-      const snapshot = await getDocs(this.collectionRef)
-      return snapshot.docs.map(getElement)
-    } catch (error) {
-      throw new Error(error)
-    }
-  }
 
   // setAll(data) {
   //   data.forEach((item) => {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex flex-col items-center p-4 gap-2">
-      <BaseCheckboxGroup v-model="selectedSections" :options="dictionarySections" class="dictionary-sections" />
+      <BaseCheckboxGroup v-model="selectedCategories" :options="dictionaryCategories" class="dictionary-categories" />
       <SearchInput :collection="getExpressions" @select-new="addNewExpression" @select="updateExpression" />
     </div>
     <hr class="my-1" />
@@ -28,7 +28,7 @@
 <script>
 import { call, get } from 'vuex-pathify'
 
-import { dictionarySection, dictionarySections } from '../api/types/section'
+import { dictionaryCategory, dictionaryCategories } from '../api/types/category'
 import { BaseButton, BaseCheckboxGroup } from './base'
 import SearchInput from './modules/SearchInput.vue'
 import { voiceText } from '../api/utilities/speech'
@@ -41,8 +41,8 @@ export default {
     SearchInput,
   },
   data: () => ({
-    dictionarySections,
-    selectedSections: [dictionarySection.LEXICON],
+    dictionaryCategories,
+    selectedCategories: [dictionaryCategory.LEXICON],
     searchText: '',
     translate: '',
     saving: false,
@@ -51,6 +51,9 @@ export default {
   computed: {
     ...get('expressions', {
       getExpressions: 'collection',
+    }),
+    ...get('users', {
+      user: 'user',
     }),
   },
   created() {
@@ -62,7 +65,8 @@ export default {
       await this.addExpression({
         target,
         translate,
-        sections: this.selectedSections,
+        categories: this.selectedCategories,
+        ownerId: this.user._id,
       })
       this.searchText = ''
       this.saving = false
@@ -78,7 +82,7 @@ export default {
 </script>
 
 <style>
-.dictionary-sections .checkbox-group-option {
+.dictionary-categories .checkbox-group-option {
   width: 8rem;
 }
 </style>

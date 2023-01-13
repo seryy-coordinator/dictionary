@@ -18,15 +18,16 @@ const mutations = {
 }
 
 const actions = {
-  async fetchAll({ commit }) {
-    const expressions = await ExpressionsCollection.getAll()
+  async fetchAll({ commit, rootGetters }) {
+    const ownerId = rootGetters['users/user']._id
+    const expressions = await ExpressionsCollection.query({ options: [['ownerId', '==', ownerId]] })
     commit('SET_COLLECTION', expressions)
   },
-  async addExpression({ commit }, { target, translate, sections }) {
-    const data = schema({ target, translate, sections })
+  async addExpression({ commit }, expression) {
+    const data = schema(expression)
     // use fibonacci number for rate
-    const expression = await ExpressionsCollection.create(data, null, true)
-    commit('ADD', expression)
+    const newExpression = await ExpressionsCollection.create(data, null, true)
+    commit('ADD', newExpression)
   },
 }
 
