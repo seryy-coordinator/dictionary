@@ -11,7 +11,7 @@
         :collection="getExpressions"
         :disabled="!selectedCategories.length"
         @select-new="addNewExpression"
-        @select="updateExpression"
+        @select="updateExpressionStatistic"
         @warn="warn()"
       />
     </div>
@@ -93,9 +93,18 @@ export default {
       this.searchText = ''
       this.saving = false
     },
-    updateExpression(expression) {
-      console.log(expression)
-      // ToDo update
+    async updateExpressionStatistic(expression) {
+      this.saving = true
+      const historyData = this.getHistoryRecord()
+      const statistic = this.getStatistic(expression.statistic)
+      await this.updateExpression({
+        ...expression,
+        statistic,
+        history: [...expression.history, historyData],
+        // labels // TODO: will add later
+      })
+      this.searchText = ''
+      this.saving = false
     },
     getHistoryRecord() {
       const date = getUTCTimeString()
@@ -123,7 +132,7 @@ export default {
       }, 1000)
     },
     voiceText,
-    ...call('expressions', ['addExpression', 'fetchAll']),
+    ...call('expressions', ['addExpression', 'updateExpression', 'fetchAll']),
   },
 }
 </script>
