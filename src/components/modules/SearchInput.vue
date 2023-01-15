@@ -1,7 +1,15 @@
 <template>
   <div class="relative">
     <div class="flex items-center justify-center h-12">
-      <BaseInput v-model="searchText" class="h-full border border-gray-300 w-80" @enter="loadSuggestions()" />
+      <div class="relative">
+        <BaseInput v-model="searchText" class="h-full border border-gray-300 w-80" @enter="loadSuggestions()" />
+        <BaseButton
+          theme="simple"
+          icon="close"
+          class="absolute right-2 top-1/2 cancel text-gray-500 hover:text-gray-700"
+          @click="clear()"
+        />
+      </div>
       <BaseButton
         :disabled="!searchText"
         :loading="loading"
@@ -102,4 +110,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.cancel {
+  transform: translateY(-50%);
+}
+</style>
