@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div class="flex items-center justify-center h-12">
-      <div class="relative">
+      <div class="relative h-full">
         <BaseInput v-model="searchText" class="h-full border border-gray-300 w-80" @enter="loadSuggestions()" />
         <BaseButton
           theme="simple"
