@@ -5,27 +5,59 @@ import store from '../store'
 import { roles } from '../api/types/role'
 import { getAuth } from '../api/firebase/auth'
 
+import Layout from '../components/layout/Layout.vue'
+
 import Authenticate from '../views/Authenticate.vue'
 import Settings from '../views/Settings.vue'
-import Home from '../views/Home.vue'
+import Dictionary from '../views/Dictionary.vue'
+import Games from '../views/Games.vue'
+import Contacts from '../views/Contacts.vue'
+import Students from '../views/Students.vue'
+import Profile from '../views/Profile.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-  },
   {
     path: '/authenticate',
     name: 'Authenticate',
     component: Authenticate,
   },
   {
-    path: '/settings',
-    name: 'Settings',
-    component: Settings,
+    path: '',
+    component: Layout,
+    children: [
+      {
+        path: '/dictionary',
+        name: 'Dictionary',
+        component: Dictionary,
+      },
+      {
+        path: '/games',
+        name: 'Games',
+        component: Games,
+      },
+      {
+        path: '/contacts',
+        name: 'Contacts',
+        component: Contacts,
+      },
+      {
+        path: '/students',
+        name: 'Students',
+        component: Students,
+      },
+      {
+        path: '/profile/:id',
+        name: 'Profile',
+        component: Profile,
+      },
+      {
+        path: '/settings',
+        name: 'Settings',
+        component: Settings,
+      },
+    ],
   },
 ]
 

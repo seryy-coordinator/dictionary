@@ -1,9 +1,10 @@
 <template>
-  <button
+  <component
+    :is="getTag"
     :class="[getTheme, { 'opacity-40 cursor-default': $attrs.disabled }]"
     class="inline-flex items-center font-bold gap-1"
-    v-bind="$attrs"
-    @click="$emit('click')"
+    v-bind="getAttributes"
+    @click="onClick()"
   >
     <div v-if="loading" class="inline-flex items-center">
       <svg class="w-5 h-5 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -17,7 +18,7 @@
     </div>
     <BaseIcon v-if="icon" :name="icon" />
     <slot>{{ text }}</slot>
-  </button>
+  </component>
 </template>
 
 <script>
@@ -46,6 +47,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    route: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     getTheme() {
@@ -61,6 +66,31 @@ export default {
           return 'bg-gray-200 border border-gray-300 text-gray-700 hover:bg-gray-300 hover:border-gray-400 rounded py-1 px-2'
         case 'simple':
           return ''
+      }
+    },
+    isExternalLink() {
+      return this.route.includes('http')
+    },
+    getTag() {
+      if (!this.route) {
+        return 'button'
+      } else if (this.isExternalLink) {
+        return 'a'
+      }
+      return 'router-link'
+    },
+    getAttributes() {
+      const attributes = this.isExternalLink ? { href: this.route } : { to: this.route }
+      return {
+        ...this.$attrs,
+        ...attributes,
+      }
+    },
+  },
+  methods: {
+    onClick() {
+      if (!this.route) {
+        this.$emit('click')
       }
     },
   },

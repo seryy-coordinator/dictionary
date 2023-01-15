@@ -59,7 +59,7 @@ export default {
       await this.signInWithPopup()
       this.authenticating = false
       if (this.currentUser) {
-        const route = this.currentUser.role ? '/' : '/settings'
+        const route = this.currentUser.role ? '/dictionary' : '/settings'
         this.$router.push(route)
       }
     },

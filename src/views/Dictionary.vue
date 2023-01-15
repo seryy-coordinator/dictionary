@@ -8,7 +8,7 @@
 import ExpressionAdding from '../components/ExpressionAdding.vue'
 
 export default {
-  name: 'Home',
+  name: 'Dictionary',
   components: {
     ExpressionAdding,
   },

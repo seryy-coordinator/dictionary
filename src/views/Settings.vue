@@ -51,7 +51,7 @@ export default {
         await this.updateUserRole(this.selectedRole)
         this.saving = false
       }
-      this.$router.push('/')
+      this.$router.push('/dictionary')
     },
     async signOut() {
       await this.signUserOut()
