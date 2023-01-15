@@ -3,7 +3,7 @@
     <div class="flex items-center justify-center h-12">
       <BaseInput v-model="searchText" class="h-full border border-gray-300 w-80" @enter="loadSuggestions()" />
       <BaseButton
-        :disabled="!this.searchText"
+        :disabled="!searchText"
         :loading="loading"
         theme="simple"
         icon="search"
@@ -14,11 +14,13 @@
     <ul
       v-show="getExpressions.length"
       class="bg-white border border-gray-100 max-h-64 overflow-auto absolute top-full w-full"
+      @click="warn()"
     >
       <li
         v-for="expression in getExpressions"
         :key="expression._id"
-        class="my-1 py-2 px-3 hover:bg-gray-50 cursor-pointer"
+        :class="{ 'hover:bg-gray-50 cursor-pointer': !disabled }"
+        class="my-1 py-2 px-3"
         @click="selectExpression(expression)"
       >
         <p class="leading-4">{{ expression.target }}</p>
@@ -45,6 +47,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => ({
     searchText: '',
@@ -65,12 +71,14 @@ export default {
   },
   methods: {
     selectExpression(expression) {
-      if (this.suggestions) {
-        this.$emit('select-new', expression)
-      } else {
-        this.$emit('select', expression)
+      if (!this.disabled) {
+        if (this.suggestions) {
+          this.$emit('select-new', expression)
+        } else {
+          this.$emit('select', expression)
+        }
+        this.clear()
       }
-      this.clear()
     },
     async loadSuggestions() {
       this.loading = true
@@ -84,6 +92,11 @@ export default {
       this.loading = false
       this.searchText = ''
       this.suggestions = null
+    },
+    warn() {
+      if (this.disabled) {
+        this.$emit('warn')
+      }
     },
   },
 }

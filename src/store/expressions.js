@@ -25,6 +25,7 @@ const actions = {
   },
   async addExpression({ commit }, expression) {
     const data = schema(expression)
+    console.log(data)
     // use fibonacci number for rate
     const newExpression = await ExpressionsCollection.create(data, null, true)
     commit('ADD', newExpression)

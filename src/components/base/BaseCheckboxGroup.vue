@@ -4,6 +4,13 @@
     <span v-if="icon" class="mr-1 material-icons">{{ icon }}</span>
     <div
       v-for="option in getOptions"
+      v-tippy="{
+        arrow: true,
+        animateFill: false,
+        placement: 'top',
+        content: option.title,
+        onShow: () => !!option.title,
+      }"
       :key="option.value"
       :class="
         value.includes(option.value)

@@ -1,5 +1,7 @@
 export const dictionaryCategory = {
-  LEXICON: 'lexicon',
-  PHRASE: 'phrase',
-  PRONUNCIATION: 'pronunciation',
+  TERM: 1,
+  DEFINITION: 2,
+  PRONUNCIATION: 3,
+  SPELLING: 4,
+  PHRASE: 5,
 }

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueTippy, { TippyComponent } from 'vue-tippy'
 import 'material-icons/iconfont/material-icons.css'
 import './assets/tailwind.css'
 import { initializeFirebase } from './api/firebase/initialize'
@@ -7,6 +8,8 @@ import router from './router'
 import App from './App.vue'
 
 Vue.config.productionTip = false
+Vue.use(VueTippy)
+Vue.component('tippy', TippyComponent)
 
 initializeFirebase()
   .then((userData) => {

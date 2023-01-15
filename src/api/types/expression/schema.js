@@ -1,8 +1,9 @@
 export const schema = (data = {}) => ({
   target: data.target || '',
   translate: data.translate || '',
-  transcription: data.transcription || '',
   ownerId: data.ownerId || '',
-  categories: data.categories || [],
+  statistic: data.statistic || {},
+  history: data.history || [],
+  transcription: data.transcription || '',
   labels: data.labels || [],
 })
