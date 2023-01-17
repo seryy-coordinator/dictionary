@@ -3,8 +3,7 @@
     <BaseCheckboxGroup
       v-model="selectedCategories"
       :options="getDictionaryCategories"
-      :class="{ 'animate-pulse animation-duration-500': animation }"
-      class="dictionary-categories"
+      class="dictionary-categories border border-gray-100 p-1"
       size="sm"
     />
     <SearchInput
@@ -12,7 +11,6 @@
       :disabled="!selectedCategories.length"
       @select-new="addNewExpression"
       @select="updateExpressionStatistic"
-      @warn="warn()"
     />
   </div>
 </template>
@@ -36,7 +34,6 @@ export default {
     selectedCategories: [dictionaryCategory.TERM],
     searchText: '',
     saving: false,
-    animation: false,
   }),
   computed: {
     getDictionaryCategories() {
@@ -49,14 +46,14 @@ export default {
     this.ownerId = this.user._id // ToDo change this later (from route)
   },
   methods: {
-    async addNewExpression({ target, translate }) {
+    async addNewExpression({ target, translate, transcription }) {
       this.saving = true
       const historyData = this.getHistoryRecord()
       const statistic = this.getStatistic()
       await this.addExpression({
         target,
         translate,
-        transcription: '', // TODO: will add later
+        transcription,
         ownerId: this.user._id,
         statistic,
         history: [historyData],
@@ -97,19 +94,9 @@ export default {
         { ...oldValue }
       )
     },
-    warn() {
-      this.animation = true
-      setTimeout(() => {
-        this.animation = false
-      }, 1000)
-    },
     ...call('expressions', ['addExpression', 'updateExpression']),
   },
 }
 </script>
 
-<style>
-.animation-duration-500 {
-  animation-duration: 0.5s;
-}
-</style>
+<style></style>

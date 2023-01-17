@@ -13,6 +13,9 @@ const urls = {
   getMiniCardsUrl(text) {
     return this.getUrl('getMiniCards', { text })
   },
+  getTranscriptionUrl(text) {
+    return this.getUrl('getTranscription', { text })
+  },
 }
 
 export async function getMiniCard(card) {
@@ -25,4 +28,10 @@ export async function getMiniCards(card) {
   const url = urls.getMiniCardsUrl(card)
   const response = await fetch(url)
   return response.json()
+}
+
+export async function getTranscription(card) {
+  const url = urls.getTranscriptionUrl(card)
+  const response = await fetch(url)
+  return response.text()
 }

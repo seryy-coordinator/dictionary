@@ -1,18 +1,28 @@
 <template>
-  <div :class="['relative flex items-center py-2', { 'text-red-400': errorMessage }]">
-    <BaseIcon v-if="icon" :name="icon" class="absolute" />
+  <div :class="['relative flex items-center', { 'text-red-400': errorMessage }]">
+    <slot name="left">
+      <BaseIcon v-if="leftIcon" :name="leftIcon" class="absolute left-1" />
+    </slot>
     <input
-      v-model="modelValue"
+      :value="value"
       v-bind="$attrs"
-      :class="['w-full text-inherit placeholder:text-inherit py-1 pr-5 focus:outline-none', icon ? 'pl-8' : 'pl-1']"
+      :class="[
+        'w-full text-inherit placeholder:text-inherit py-1 pr-8 focus:outline-none',
+        hasLeftContent ? 'pl-8' : 'pl-1',
+        hasRightContent ? 'pr-8' : 'pr-1',
+      ]"
+      v-on="inputListeners"
       @keyup.enter="$emit('enter')"
     />
-    <BaseIcon
-      v-if="errorMessage"
-      :title="errorMessage"
-      name="error"
-      class="absolute right-0 text-base cursor-pointer"
-    />
+    <slot name="right">
+      <BaseIcon v-if="rightIcon" :name="rightIcon" class="absolute right-2" />
+      <BaseIcon
+        v-if="!rightIcon && errorMessage"
+        :title="errorMessage"
+        name="error"
+        class="absolute right-2 text-base cursor-pointer"
+      />
+    </slot>
   </div>
 </template>
 
@@ -34,19 +44,29 @@ export default {
       type: String,
       default: '',
     },
-    icon: {
+    leftIcon: {
+      type: String,
+      default: '',
+    },
+    rightIcon: {
       type: String,
       default: '',
     },
   },
   computed: {
-    modelValue: {
-      get() {
-        return this.value
-      },
-      set(value) {
-        this.$emit('input', value)
-      },
+    hasLeftContent() {
+      return this.leftIcon || this.$slots.left
+    },
+    hasRightContent() {
+      return this.rightIcon || this.errorMessage || this.$slots.right
+    },
+    inputListeners() {
+      return {
+        ...this.$listeners,
+        input: (event) => {
+          this.$emit('input', event.target.value)
+        },
+      }
     },
   },
 }

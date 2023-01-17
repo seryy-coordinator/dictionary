@@ -9,12 +9,12 @@
       <BaseAvatar :src="currentUser.picture" :name="currentUser.name" />
       <span>{{ currentUser.email }}</span>
     </div>
-    <BaseButton class="mb-8" theme="gray" @click="signOut()">Sign out</BaseButton>
+    <BaseButton class="mb-8" theme="gray" rounded @click="signOut()">Sign out</BaseButton>
     <p v-if="!currentUser.role" class="text-grey-600">
       To continue, select the reason why you want to use the service:
     </p>
     <BaseRadioGroup v-model="selectedRole" :options="getRoles" class="roles mb-8 flex-col" label="You are" />
-    <BaseButton :disabled="!selectedRole" icon="auto_stories" @click="updateRole()">Get to work</BaseButton>
+    <BaseButton :disabled="!selectedRole" icon="auto_stories" rounded @click="updateRole()">Get to work</BaseButton>
   </div>
 </template>
 
