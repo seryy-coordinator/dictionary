@@ -20,11 +20,11 @@
 <script>
 import { call, get } from 'vuex-pathify'
 
-import { dictionaryCategory, dictionaryCategories } from '../api/types/category'
-import { BaseCheckboxGroup } from './base'
-import SearchInput from './modules/SearchInput.vue'
-import { getFibonacciRate } from '../api/utilities'
-import { getUTCTimeString } from '../api/utilities/date'
+import { BaseCheckboxGroup } from '../base'
+import SearchInput from './SearchInput.vue'
+import { dictionaryCategory, dictionaryCategories } from '../../api/types/category'
+import { getFibonacciRate } from '../../api/utilities'
+import { getUTCTimeString } from '../../api/utilities/date'
 
 export default {
   name: 'ExpressionAdding',

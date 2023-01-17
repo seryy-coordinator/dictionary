@@ -9,8 +9,8 @@
 <script>
 import { call } from 'vuex-pathify'
 
-import ExpressionAdding from '../components/ExpressionAdding.vue'
-import ExpressionList from '../components/ExpressionList.vue'
+import ExpressionAdding from '../components/modules/ExpressionAdding.vue'
+import ExpressionList from '../components/modules/ExpressionList.vue'
 
 export default {
   name: 'Dictionary',

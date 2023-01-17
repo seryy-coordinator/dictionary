@@ -40,7 +40,7 @@
 
 <script>
 import { BaseButton, BaseInput } from '../base'
-import { getMiniCard } from '../../api/firebase/functions'
+import { getMiniCards } from '../../api/firebase/functions'
 
 // ToDo we have to add button clear
 
@@ -90,9 +90,9 @@ export default {
     },
     async loadSuggestions() {
       this.loading = true
-      const card = await getMiniCard(this.searchText)
+      const cards = await getMiniCards(this.searchText)
       if (this.loading) {
-        this.suggestions = [card]
+        this.suggestions = cards
         this.loading = false
       }
     },

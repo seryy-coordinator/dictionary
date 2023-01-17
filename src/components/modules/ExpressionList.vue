@@ -21,8 +21,8 @@
 <script>
 import { get } from 'vuex-pathify'
 
-import { BaseButton } from './base'
-import { voiceText } from '../api/utilities/speech'
+import { BaseButton } from '../base'
+import { voiceText } from '../../api/utilities/speech'
 
 export default {
   name: 'ExpressionList',
