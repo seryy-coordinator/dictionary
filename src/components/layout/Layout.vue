@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-screen p-2">
+  <div class="flex flex-col h-screen py-2">
     <TopBar class="mx-auto" />
     <router-view class="flex-grow" />
     <TabBar class="mx-auto" />
