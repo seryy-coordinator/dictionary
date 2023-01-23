@@ -1,11 +1,11 @@
 <template>
   <div>
     <ExpressionAdding />
-    <div class="my-1 border-t border-b border-gray-100 bg-gray-50 flex justify-end px-2 h-7">
+    <div class="mt-1 border-t border-b border-gray-100 bg-gray-50 flex justify-end px-2 h-5">
       <BaseButton
         theme="simple"
-        icon="info"
-        class="text-lg text-blue-600 hover:text-blue-700"
+        icon="help"
+        class="text-base text-blue-500 hover:text-blue-600"
         @click="showEducation()"
       />
     </div>

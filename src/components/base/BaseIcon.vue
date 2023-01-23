@@ -1,5 +1,5 @@
 <template>
-  <span class="select-none material-icons pointer-events-none">
+  <span class="base-icon select-none material-icons pointer-events-none">
     <slot>{{ name }}</slot>
   </span>
 </template>
@@ -16,4 +16,8 @@ export default {
 }
 </script>
 
-<style lang="postcss" scoped></style>
+<style>
+.base-icon.material-icons {
+  font-size: inherit;
+}
+</style>
