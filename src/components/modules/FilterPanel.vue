@@ -16,7 +16,7 @@ export default {
     BaseButton,
   },
   computed: {
-    ...get('expressions', { getExpressions: 'collection' }),
+    ...get('expressions', { getExpressions: 'collection' }, false),
   },
 }
 </script>

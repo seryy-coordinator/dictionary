@@ -26,10 +26,10 @@ const routes = [
     children: [
       {
         path: '/dictionary',
-        redirect: '/',
+        redirect: '',
       },
       {
-        path: '/',
+        path: '',
         name: 'Dictionary',
         component: Dictionary,
       },

@@ -39,8 +39,8 @@ export default {
     getDictionaryCategories() {
       return dictionaryCategories.map((category) => ({ ...category, title: category.description }))
     },
-    ...get('expressions', { getExpressions: 'collection' }),
-    ...get('users', { user: 'user' }),
+    ...get('expressions', { getExpressions: 'collection' }, false),
+    ...get('users', { user: 'user' }, false),
   },
   created() {
     this.ownerId = this.user._id // ToDo change this later (from route)

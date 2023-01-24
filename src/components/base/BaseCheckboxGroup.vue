@@ -4,17 +4,10 @@
     <span v-if="icon" class="mr-1 material-icons">{{ icon }}</span>
     <div
       v-for="option in getOptions"
-      v-tippy="{
-        arrow: true,
-        animateFill: false,
-        placement: 'top',
-        content: option.title,
-        onShow: () => !!option.title,
-      }"
       :key="option.value"
       :class="[
         optionClasses,
-        value.includes(option.value)
+        modelValue.includes(option.value)
           ? 'bg-blue-400 text-white border-blue-500'
           : 'bg-gray-300 hover:bg-gray-400 opacity-20 border-transparent',
       ]"
@@ -26,7 +19,7 @@
         v-else-if="option.image"
         :src="option.image"
         :alt="option.label || option.value"
-        :class="[getImageClasses, { 'filter-white': value.includes(option.value) }]"
+        :class="[getImageClasses, { 'filter-white': modelValue.includes(option.value) }]"
       />
       <span v-if="option.label" :class="labelClasses"> {{ option.label }}</span>
     </div>
@@ -37,7 +30,7 @@
 export default {
   name: 'BaseCheckboxGroup',
   props: {
-    value: {
+    modelValue: {
       type: Array,
       required: true,
     },
@@ -58,6 +51,7 @@ export default {
       default: 'md',
     },
   },
+  emits: ['update:modelValue'],
   computed: {
     getOptions() {
       return this.options.map((option) => ({
@@ -112,10 +106,10 @@ export default {
   },
   methods: {
     select(option) {
-      const value = this.value.includes(option.value)
-        ? this.value.filter((key) => key !== option.value)
-        : [...this.value, option.value]
-      this.$emit('input', value)
+      const value = this.modelValue.includes(option.value)
+        ? this.modelValue.filter((key) => key !== option.value)
+        : [...this.modelValue, option.value]
+      this.$emit('update:modelValue', value)
     },
   },
 }

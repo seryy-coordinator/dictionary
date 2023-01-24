@@ -35,7 +35,7 @@ export default {
     FilterPanel,
   },
   computed: {
-    ...get('expressions', { getExpressions: 'collection' }),
+    ...get('expressions', { getExpressions: 'collection' }, false),
   },
   methods: {
     voiceText,

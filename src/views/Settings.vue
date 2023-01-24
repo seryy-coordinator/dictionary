@@ -39,7 +39,7 @@ export default {
     getRoles() {
       return roles.filter(({ isDefault }) => isDefault).map((role) => ({ ...role, value: role.key }))
     },
-    currentUser: get('users/user'),
+    currentUser: get('users/user', false),
   },
   created() {
     this.selectedRole = this.currentUser.role

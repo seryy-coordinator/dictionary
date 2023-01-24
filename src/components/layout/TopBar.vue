@@ -19,7 +19,7 @@ export default {
     BaseButton,
   },
   computed: {
-    currentUser: get('users/user'),
+    currentUser: get('users/user', false),
   },
 }
 </script>

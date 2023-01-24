@@ -4,14 +4,14 @@
       <BaseIcon v-if="leftIcon" :name="leftIcon" class="absolute left-1" />
     </slot>
     <input
-      :value="value"
+      :value="modelValue"
       v-bind="$attrs"
       :class="[
         'w-full text-inherit placeholder:text-inherit py-1 pr-8 focus:outline-none',
         hasLeftContent ? 'pl-8' : 'pl-1',
         hasRightContent ? 'pr-8' : 'pr-1',
       ]"
-      v-on="inputListeners"
+      @input="$emit('update:modelValue', $event.target.value)"
       @keyup.enter="$emit('enter')"
     />
     <slot name="right">
@@ -36,7 +36,7 @@ export default {
     BaseIcon,
   },
   props: {
-    value: {
+    modelValue: {
       type: String,
       required: true,
     },
@@ -53,20 +53,13 @@ export default {
       default: '',
     },
   },
+  emits: ['update:modelValue', 'enter'],
   computed: {
     hasLeftContent() {
       return this.leftIcon || this.$slots.left
     },
     hasRightContent() {
       return this.rightIcon || this.errorMessage || this.$slots.right
-    },
-    inputListeners() {
-      return {
-        ...this.$listeners,
-        input: (event) => {
-          this.$emit('input', event.target.value)
-        },
-      }
     },
   },
 }
