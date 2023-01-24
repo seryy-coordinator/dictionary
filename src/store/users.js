@@ -1,9 +1,10 @@
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { make } from 'vuex-pathify'
 
-import { schema } from '../api/types/user'
-import { getAuth } from '../api/firebase/auth'
 import { UsersCollection } from '../api/collections'
+import { getAuth } from '../api/firebase/auth'
+import { schema } from '../api/types/user'
+import { role } from '../api/types/role'
 
 const state = () => ({
   user: null,
@@ -22,15 +23,12 @@ const mutations = {
 
 const actions = {
   async signInWithPopup({ dispatch }) {
-    console.log('signInWithPopup')
     const auth = getAuth()
     const provider = new GoogleAuthProvider()
     auth.useDeviceLanguage()
 
     try {
-      console.log(1)
       const result = await signInWithPopup(auth, provider)
-      console.log(2)
       if (result.user) {
         const { user } = result
         const data = {
@@ -78,7 +76,7 @@ const actions = {
       name: displayName,
       email,
       picture: photoURL,
-      role: '',
+      role: role.STUDENT,
     })
     await UsersCollection.set(_id, newUser)
     commit('SET_USER', newUser)

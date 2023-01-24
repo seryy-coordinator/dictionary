@@ -4,6 +4,7 @@ import { initializeFirebase } from './api/firebase/initialize'
 import store from './store'
 import router from './router'
 import VueStic from './vuestic'
+import { BaseAvatar } from './components/base'
 import App from './App.vue'
 
 import './assets/tailwind.css'
@@ -22,6 +23,7 @@ initializeFirebase()
   })
   .then(() => {
     const app = createApp(App)
+    app.component('BaseAvatar', BaseAvatar) // ToDo change it
     app.use(store)
     app.use(router)
     app.use(VueStic)

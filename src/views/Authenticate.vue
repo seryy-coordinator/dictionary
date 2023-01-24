@@ -3,7 +3,7 @@
     <h1 class="text-blue-500 text-6xl mb-6">Welcome</h1>
     <h2 class="text-grey-800 text-4xl mb-3">Please login below to access this resource</h2>
     <p class="text-grey-600 mb-6">Authenticate with your @google.com email to access this resource</p>
-    <va-button :loading="authenticating" color="gray-200" border-color="gray-300" icon="add" @click="signIn()">
+    <va-button :loading="authenticating" color="gray-200" border-color="gray-300" @click="signIn()">
       <template #prepend>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" class="w-5 mr-1">
           <path
@@ -54,8 +54,7 @@ export default {
       await this.signInWithPopup()
       this.authenticating = false
       if (this.currentUser) {
-        const route = this.currentUser.role ? '/dictionary' : '/settings'
-        this.$router.push(route)
+        this.$router.push('/')
       }
     },
     ...call('users', ['signInWithPopup']),
