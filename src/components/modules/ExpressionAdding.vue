@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col items-center p-4 gap-2">
-    <BaseCheckboxGroup
+    <base-checkbox-group
       v-model="selectedCategories"
       :options="getDictionaryCategories"
-      class="dictionary-categories border border-gray-100 p-1"
       size="sm"
+      class="dictionary-categories border border-gray-100 p-1"
     />
     <SearchInput
       :collection="getExpressions"
@@ -18,7 +18,6 @@
 <script>
 import { call, get } from 'vuex-pathify'
 
-import { BaseCheckboxGroup } from '../base'
 import SearchInput from './SearchInput.vue'
 import { dictionaryCategory, dictionaryCategories } from '../../api/types/category'
 import { getFibonacciRate } from '../../api/utilities'
@@ -27,7 +26,6 @@ import { getUTCTimeString } from '../../api/utilities/date'
 export default {
   name: 'ExpressionAdding',
   components: {
-    BaseCheckboxGroup,
     SearchInput,
   },
   data: () => ({
@@ -39,8 +37,8 @@ export default {
     getDictionaryCategories() {
       return dictionaryCategories.map((category) => ({ ...category, title: category.description }))
     },
-    ...get('expressions', { getExpressions: 'collection' }),
-    ...get('users', { user: 'user' }),
+    ...get('expressions', { getExpressions: 'collection' }, false),
+    ...get('users', { user: 'user' }, false),
   },
   created() {
     this.ownerId = this.user._id // ToDo change this later (from route)

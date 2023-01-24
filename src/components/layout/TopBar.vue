@@ -1,25 +1,37 @@
 <template>
-  <div class="flex items-center">
-    <BaseButton route="/students" theme="simple" icon="school" class="text-gray-500 hover:text-gray-700" />
-    <BaseButton route="/contacts" theme="simple" icon="people" class="text-gray-500 hover:text-gray-700 mx-2" />
-    <router-link :to="`/profile/${currentUser._id}`" class="ml-4">
-      <BaseAvatar :src="currentUser.picture" :name="currentUser.name"
-    /></router-link>
-  </div>
+  <va-navbar color="primary" shape>
+    <template #left>
+      <va-navbar-item class="font-semibold text-2xl">LOGO</va-navbar-item>
+    </template>
+    <template #right>
+      <va-navbar-item>
+        <router-link to="/students" class="flex items-center gap-1">
+          <va-icon name="school" />
+          <p>Students</p>
+        </router-link>
+      </va-navbar-item>
+      <va-navbar-item>
+        <router-link to="/contacts" class="flex items-center gap-1">
+          <va-icon name="people" />
+          <p>Contacts</p>
+        </router-link>
+      </va-navbar-item>
+      <va-navbar-item>
+        <router-link v-if="currentUser" :to="`/profile/${currentUser._id}`" class="ml-4">
+          <base-avatar :src="currentUser.picture" :name="currentUser.name" />
+        </router-link>
+      </va-navbar-item>
+    </template>
+  </va-navbar>
 </template>
 
 <script>
 import { get } from 'vuex-pathify'
-import { BaseAvatar, BaseButton } from '../base'
 
 export default {
   name: 'TopBar',
-  components: {
-    BaseAvatar,
-    BaseButton,
-  },
   computed: {
-    currentUser: get('users/user'),
+    currentUser: get('users/user', false),
   },
 }
 </script>

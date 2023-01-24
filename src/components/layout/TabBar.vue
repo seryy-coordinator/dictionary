@@ -1,32 +1,34 @@
 <template>
-  <ul class="flex items-center">
-    <li v-for="tab in tabs" :key="tab.route">
-      <router-link
-        :to="tab.route"
-        :class="tab.route === $route.path ? 'bg-green-200' : 'hover:bg-gray-300 bg-gray-200'"
-        class="px-3 py-2"
-        >{{ tab.label }}</router-link
-      >
-    </li>
-  </ul>
+  <va-button-group color="info" icon-color="warning">
+    <va-button
+      v-for="tab in tabs"
+      :key="tab.route"
+      :to="tab.route"
+      :icon="tab.icon"
+      :disabled="tab.route === $route.path"
+      class="rounded-b-none"
+    >
+      {{ tab.label }}
+    </va-button>
+  </va-button-group>
 </template>
 
 <script>
 const tabs = [
   {
     label: 'Dictionary',
-    route: '/dictionary',
-    icon: '',
+    route: '/',
+    icon: 'menu_book',
   },
   {
     label: 'Games',
     route: '/games',
-    icon: '',
+    icon: 'extension',
   },
   {
     label: 'Settings',
     route: '/settings',
-    icon: '',
+    icon: 'manage_accounts',
   },
 ]
 

@@ -8,12 +8,7 @@
         class="flex items-center my-1 p-1 gap-1 hover:bg-gray-50"
       >
         <strong class="font-medium">{{ expression.target }}</strong>
-        <BaseButton
-          theme="simple"
-          icon="volume_up"
-          class="text-blue-400 hover:text-blue-500"
-          @click="voiceText(expression.target)"
-        />
+        <va-button color="info" preset="plain" icon="volume_up" size="small" @click="voiceText(expression.target)" />
         <span class="mx-1">-</span>
         <span class="text-gray-600">{{ expression.translate }}</span>
       </li>
@@ -24,18 +19,16 @@
 <script>
 import { get } from 'vuex-pathify'
 
-import { BaseButton } from '../base'
 import FilterPanel from './FilterPanel.vue'
 import { voiceText } from '../../api/utilities/speech'
 
 export default {
   name: 'ExpressionList',
   components: {
-    BaseButton,
     FilterPanel,
   },
   computed: {
-    ...get('expressions', { getExpressions: 'collection' }),
+    ...get('expressions', { getExpressions: 'collection' }, false),
   },
   methods: {
     voiceText,

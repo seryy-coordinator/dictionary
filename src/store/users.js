@@ -1,9 +1,10 @@
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { make } from 'vuex-pathify'
 
-import { schema } from '../api/types/user'
-import { getAuth } from '../api/firebase/auth'
 import { UsersCollection } from '../api/collections'
+import { getAuth } from '../api/firebase/auth'
+import { schema } from '../api/types/user'
+import { role } from '../api/types/role'
 
 const state = () => ({
   user: null,
@@ -75,7 +76,7 @@ const actions = {
       name: displayName,
       email,
       picture: photoURL,
-      role: '',
+      role: role.STUDENT,
     })
     await UsersCollection.set(_id, newUser)
     commit('SET_USER', newUser)
