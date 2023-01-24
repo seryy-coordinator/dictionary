@@ -1,8 +1,9 @@
 import { createApp } from 'vue'
-// import 'material-icons/iconfont/material-icons.css'
+
 import { initializeFirebase } from './api/firebase/initialize'
 import store from './store'
 import router from './router'
+import VueStic from './vuestic'
 import App from './App.vue'
 
 import './assets/tailwind.css'
@@ -23,5 +24,6 @@ initializeFirebase()
     const app = createApp(App)
     app.use(store)
     app.use(router)
+    app.use(VueStic)
     app.mount('#app')
   })

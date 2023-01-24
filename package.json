@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
     "serve": "npm run dev",
     "build": "vite build",
-    "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "deploy": "npm run build & firebase deploy"
+    "deploy": "npm run build & firebase deploy",
+    "dev": "vite",
+    "preview": "vite preview"
   },
   "dependencies": {
     "firebase": "^9.16.0",
@@ -17,6 +17,7 @@
     "moment-timezone": "^0.5.37",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
+    "vuestic-ui": "^1.5.0",
     "vuex": "^4.0.2",
     "vuex-pathify": "^3.0.0-beta"
   },

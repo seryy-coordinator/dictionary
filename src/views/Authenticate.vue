@@ -3,9 +3,9 @@
     <h1 class="text-blue-500 text-6xl mb-6">Welcome</h1>
     <h2 class="text-grey-800 text-4xl mb-3">Please login below to access this resource</h2>
     <p class="text-grey-600 mb-6">Authenticate with your @google.com email to access this resource</p>
-    <BaseButton :loading="authenticating" theme="gray" rounded @click="signIn()">
-      <div class="flex items-center gap-1">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" class="w-5">
+    <va-button :loading="authenticating" color="gray-200" border-color="gray-300" icon="add" @click="signIn()">
+      <template #prepend>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" class="w-5 mr-1">
           <path
             fill="#4285F4"
             fill-rule="evenodd"
@@ -31,22 +31,17 @@
             clip-rule="evenodd"
           />
         </svg>
-        <span>Login With Google</span>
-      </div>
-    </BaseButton>
+      </template>
+      Login With Google
+    </va-button>
   </div>
 </template>
 
 <script>
 import { call, get } from 'vuex-pathify'
 
-import { BaseButton } from '../components/base'
-
 export default {
   name: 'Authenticate',
-  components: {
-    BaseButton,
-  },
   data: () => ({
     authenticating: false,
   }),
