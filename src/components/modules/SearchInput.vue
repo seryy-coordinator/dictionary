@@ -1,22 +1,12 @@
 <template>
   <div class="relative w-80">
     <div class="flex flex-col gap-1 p-1 border border-gray-100">
-      <BaseInput v-model="enText" class="h-10 border border-gray-300" @input="search" @blur="loadAfterBlur()">
-        <template #left>
-          <p class="absolute left-1 font-semibold text-gray-800">En:</p>
+      <va-input v-model="enText" :loading="loading" label="En" @input="search" @blur="loadAfterBlur()" />
+      <va-input v-model="ruText" label="Ru">
+        <template #append>
+          <va-button :disabled="!enText || !ruText || disabled" icon="add" @click="add()" />
         </template>
-        <template #right>
-          <BaseLoading v-if="loading" class="mr-2" />
-        </template>
-      </BaseInput>
-      <div class="flex items-center justify-center h-10">
-        <BaseInput v-model="ruText" id="ruText" class="h-full border border-gray-300 w-80">
-          <template #left>
-            <p class="absolute left-1 font-semibold text-gray-800">Ru:</p>
-          </template>
-        </BaseInput>
-        <BaseButton :disabled="!enText || !ruText || disabled" icon="add" class="h-full px-2" @click="add()" />
-      </div>
+      </va-input>
     </div>
     <ul
       v-show="getExpressions.length"
@@ -38,16 +28,10 @@
 
 <script>
 import { debounce } from 'lodash-es'
-import { BaseButton, BaseInput, BaseLoading } from '../base'
 import { getMiniCards, getTranscription } from '../../api/firebase/functions'
 
 export default {
   name: 'SearchInput',
-  components: {
-    BaseButton,
-    BaseInput,
-    BaseLoading,
-  },
   props: {
     collection: {
       type: Array,
@@ -140,7 +124,7 @@ export default {
           translate: '',
         }
       }
-      if (!this.selected?._id) {
+      if (!this.selected?._id && this.enText) {
         this.getTranscription()
       }
     },

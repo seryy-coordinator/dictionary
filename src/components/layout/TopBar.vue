@@ -18,7 +18,7 @@
       </va-navbar-item>
       <va-navbar-item>
         <router-link v-if="currentUser" :to="`/profile/${currentUser._id}`" class="ml-4">
-          <BaseAvatar :src="currentUser.picture" :name="currentUser.name" />
+          <base-avatar :src="currentUser.picture" :name="currentUser.name" />
         </router-link>
       </va-navbar-item>
     </template>
