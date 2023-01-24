@@ -51,7 +51,7 @@ export default {
     authenticating: false,
   }),
   computed: {
-    currentUser: get('users/user'),
+    currentUser: get('users/user', false),
   },
   methods: {
     async signIn() {

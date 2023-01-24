@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 import store from '../store'
 import { roles } from '../api/types/role'
@@ -15,8 +14,6 @@ import Contacts from '../views/Contacts.vue'
 import Students from '../views/Students.vue'
 import Profile from '../views/Profile.vue'
 
-Vue.use(VueRouter)
-
 const routes = [
   {
     path: '/authenticate',
@@ -29,6 +26,10 @@ const routes = [
     children: [
       {
         path: '/dictionary',
+        redirect: '/',
+      },
+      {
+        path: '/',
         name: 'Dictionary',
         component: Dictionary,
       },
@@ -61,9 +62,8 @@ const routes = [
   },
 ]
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
 
