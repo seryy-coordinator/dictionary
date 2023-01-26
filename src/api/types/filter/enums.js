@@ -14,3 +14,15 @@ export const groupOption = {
   WEEK: 2,
   MONTH: 3,
 }
+
+export const status = {
+  LEARNED: 1,
+  STUDIED: 2,
+}
+
+export const datePeriod = {
+  WEEK: 1,
+  MONTH: 2,
+  THREE_MONTHS: 3,
+  YEAR: 4,
+}

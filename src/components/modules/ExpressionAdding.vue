@@ -20,7 +20,7 @@ import { call, get } from 'vuex-pathify'
 
 import SearchInput from './SearchInput.vue'
 import { dictionaryCategory, dictionaryCategories } from '../../api/types/category'
-import { getFibonacciRate } from '../../api/utilities'
+import { getFibonacciRate } from '../../api/utilities/fibonacci'
 import { getUTCTimeString } from '../../api/utilities/date'
 
 export default {

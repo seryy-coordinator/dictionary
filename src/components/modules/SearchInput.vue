@@ -42,6 +42,7 @@ export default {
       default: false,
     },
   },
+  emits: ['select', 'select-new'],
   data: () => ({
     enText: '',
     ruText: '',

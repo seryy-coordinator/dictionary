@@ -8,6 +8,8 @@ import { role } from '../api/types/role'
 
 const state = () => ({
   user: null,
+  teachers: [],
+  contacts: [],
 })
 
 const getters = {

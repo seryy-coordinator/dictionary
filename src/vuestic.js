@@ -6,6 +6,7 @@ import {
   VaButtonToggle,
   VaCheckbox,
   VaChip,
+  VaDateInput,
   VaDivider,
   VaDropdown,
   VaDropdownContent,
@@ -13,6 +14,7 @@ import {
   VaInput,
   VaNavbar,
   VaNavbarItem,
+  VaSelect,
 } from 'vuestic-ui'
 
 import 'vuestic-ui/styles/essential.css'
@@ -26,6 +28,7 @@ const config = createVuesticEssential({
     VaButtonToggle,
     VaCheckbox,
     VaChip,
+    VaDateInput,
     VaDivider,
     VaDropdown,
     VaDropdownContent,
@@ -33,6 +36,7 @@ const config = createVuesticEssential({
     VaInput,
     VaNavbar,
     VaNavbarItem,
+    VaSelect,
   },
   config: {
     colors: {

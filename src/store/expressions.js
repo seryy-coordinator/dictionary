@@ -1,4 +1,5 @@
 import { make } from 'vuex-pathify'
+import { uniq } from 'lodash-es'
 import { ExpressionsCollection } from '../api/collections'
 import { schema } from '../api/types/expression'
 
@@ -8,6 +9,10 @@ const state = () => ({
 
 const getters = {
   ...make.getters(state),
+  getLabels({ collection }) {
+    const labels = collection.flatMap(({ labels }) => labels)
+    return uniq(labels)
+  },
 }
 
 const mutations = {
