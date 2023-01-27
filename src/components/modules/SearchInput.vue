@@ -1,8 +1,8 @@
 <template>
   <div class="relative w-80">
     <div class="flex flex-col gap-1 p-1 border border-gray-100">
-      <va-input v-model="enText" :loading="loading" label="En" @input="search" @blur="loadAfterBlur()" />
-      <va-input v-model="ruText" label="Ru">
+      <va-input v-model="enText" :loading="loading" label="En" @update:modelValue="search" @blur="loadAfterBlur()" />
+      <va-input v-model="ruText" label="Ru" id="ruText">
         <template #append>
           <va-button :disabled="!enText || !ruText || disabled" icon="add" @click="add()" />
         </template>
