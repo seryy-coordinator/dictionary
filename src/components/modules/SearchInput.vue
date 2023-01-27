@@ -55,7 +55,7 @@ export default {
       const suggestion = this.suggestions.find(({ target }) => target === this.enText)
       if (suggestion) {
         const suggestions = suggestion.translate.split(/[;,]+/)
-        const translates = suggestions.length > 1 ? [suggestion.translate, ...suggestions] : suggestion.translate
+        const translates = suggestions.length > 1 ? [suggestion.translate, ...suggestions] : [suggestion.translate]
         return translates.filter((translate) => translate.includes(this.ruText)).map((translate) => ({ translate }))
       }
       return []

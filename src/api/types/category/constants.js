@@ -29,11 +29,11 @@ export const dictionaryCategories = [
     image: '',
     description: 'Foreign words that you find difficult to write',
   },
-  {
-    value: dictionaryCategory.PHRASE,
-    label: 'Phrase',
-    icon: 'translate',
-    image: '',
-    description: 'Long phrases',
-  },
+  // {
+  //   value: dictionaryCategory.PHRASE,
+  //   label: 'Phrase',
+  //   icon: 'translate',
+  //   image: '',
+  //   description: 'Long phrases',
+  // },
 ]
