@@ -3,5 +3,4 @@ export const dictionaryCategory = {
   DEFINITION: 2,
   PRONUNCIATION: 3,
   SPELLING: 4,
-  // PHRASE: 5,
 }

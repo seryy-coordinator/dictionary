@@ -37,12 +37,16 @@ export default {
       type: Array,
       default: () => [],
     },
+    phrase: {
+      type: Boolean,
+      default: false,
+    },
     disabled: {
       type: Boolean,
       default: false,
     },
   },
-  emits: ['select', 'select-new'],
+  emits: ['select', 'select-new', 'pre-select'],
   data: () => ({
     enText: '',
     ruText: '',
@@ -81,8 +85,12 @@ export default {
       if (this.selected._id) {
         this.$emit('select', this.selected)
       } else {
-        const transcription = await this.transcriptionRequest
-        const selected = { ...this.selected, transcription }
+        const transcription = this.phrase ? await this.transcriptionRequest : ''
+        const selected = {
+          ...this.selected,
+          transcription,
+          translate: this.selected.translate || this.ruText,
+        }
         this.$emit('select-new', selected)
       }
       this.clear()
@@ -92,6 +100,7 @@ export default {
         this.selected = expression
         this.enText = expression.target
         this.ruText = expression.translate
+        this.$emit('pre-select', expression)
       } else if (expression.target) {
         this.selected = {
           target: expression.target,
@@ -125,7 +134,7 @@ export default {
           translate: '',
         }
       }
-      if (!this.selected?._id && this.enText) {
+      if (!this.selected?._id && this.enText && !this.phrase) {
         this.getTranscription()
       }
     },

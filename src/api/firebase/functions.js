@@ -20,18 +20,30 @@ const urls = {
 
 export async function getMiniCard(card) {
   const url = urls.getMiniCardUrl(card)
-  const response = await fetch(url)
-  return response.json()
+  try {
+    const response = await fetch(url)
+    return await response.json()
+  } catch (error) {
+    return {}
+  }
 }
 
 export async function getMiniCards(card) {
   const url = urls.getMiniCardsUrl(card)
-  const response = await fetch(url)
-  return response.json()
+  try {
+    const response = await fetch(url)
+    return await response.json()
+  } catch (error) {
+    return []
+  }
 }
 
 export async function getTranscription(card) {
   const url = urls.getTranscriptionUrl(card)
-  const response = await fetch(url)
-  return response.text()
+  try {
+    const response = await fetch(url)
+    return await response.text()
+  } catch (error) {
+    return ''
+  }
 }

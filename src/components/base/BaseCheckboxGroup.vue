@@ -84,7 +84,7 @@ export default {
     labelClasses() {
       switch (this.size) {
         case 'sm':
-          return 'text-xs'
+          return 'sm:text-xs text-[11px]'
         case 'lg':
           return 'text-base'
         case 'md':
@@ -95,7 +95,7 @@ export default {
     optionClasses() {
       switch (this.size) {
         case 'sm':
-          return 'w-24'
+          return 'sm:w-24 w-20'
         case 'lg':
           return 'w-32'
         case 'md':

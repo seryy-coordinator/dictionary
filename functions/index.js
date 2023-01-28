@@ -15,8 +15,9 @@ function constructGETRequest(serviceMethod) {
       const result = await serviceMethod(req.query);
       res.send(result);
     } catch (error) {
-      functions.logger.log(`translateCard: Error = ${error}!`);
-      res.status(400).send(error);
+      functions.logger.log(`Error = ${error}!`);
+      // ToDo we need logs
+      res.send(null);
     }
   });
 }

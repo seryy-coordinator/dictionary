@@ -1,17 +1,27 @@
 <template>
-  <div class="flex flex-col items-center p-4 gap-2">
-    <base-checkbox-group
-      v-model="selectedCategories"
-      :options="getDictionaryCategories"
-      size="sm"
-      class="dictionary-categories border border-gray-100 p-1"
-    />
-    <SearchInput
-      :collection="getExpressions"
-      :disabled="!selectedCategories.length"
-      @select-new="addNewExpression"
-      @select="updateExpressionStatistic"
-    />
+  <div class="flex justify-center">
+    <div class="flex flex-col p-4">
+      <base-checkbox-group
+        v-model="selectedCategories"
+        :options="getDictionaryCategories"
+        size="sm"
+        class="border border-gray-100 p-1"
+      />
+      <div class="flex items-center gap-3 my-1 ml-4">
+        <base-checkbox v-model="phrase" label="Big phrase" size="small" />
+        <base-checkbox v-model="notImportant" label="Not important" size="small" @update:modelValue="restudy = false" />
+        <base-checkbox v-model="restudy" label="Re-study" size="small" @update:modelValue="notImportant = false" />
+      </div>
+      <SearchInput
+        :collection="getExpressions"
+        :phrase="phrase"
+        :disabled="!selectedCategories.length"
+        class="self-center"
+        @select-new="addNewExpression"
+        @select="updateExpressionStatistic"
+        @pre-select="phrase = $event.phrase || false"
+      />
+    </div>
   </div>
 </template>
 
@@ -30,7 +40,9 @@ export default {
   },
   data: () => ({
     selectedCategories: [dictionaryCategory.TERM],
-    searchText: '',
+    phrase: false,
+    notImportant: false,
+    restudy: false,
     saving: false,
   }),
   computed: {
@@ -55,22 +67,22 @@ export default {
         ownerId: this.user._id,
         statistic,
         history: [historyData],
+        phrase: this.phrase,
         // labels // TODO: will add later
       })
-      this.searchText = ''
       this.saving = false
     },
     async updateExpressionStatistic(expression) {
       this.saving = true
       const historyData = this.getHistoryRecord()
-      const statistic = this.getStatistic(expression.statistic)
+      const statistic = this.notImportant ? {} : this.getStatistic(expression.statistic)
       await this.updateExpression({
         ...expression,
         statistic,
         history: [...expression.history, historyData],
+        phrase: this.phrase,
         // labels // TODO: will add later
       })
-      this.searchText = ''
       this.saving = false
     },
     getHistoryRecord() {
@@ -86,7 +98,7 @@ export default {
         (acc, key) => {
           acc[key] = acc[key] || {}
           const oldRate = acc[key]?.rate
-          acc[key].rate = getFibonacciRate(oldRate)
+          acc[key].rate = this.restudy ? 1 : getFibonacciRate(oldRate)
           return acc
         },
         { ...oldValue }

@@ -6,4 +6,5 @@ export const schema = (data = {}) => ({
   history: data.history || [],
   transcription: data.transcription || '',
   labels: data.labels || [],
+  phrase: data.phrase || false,
 })
