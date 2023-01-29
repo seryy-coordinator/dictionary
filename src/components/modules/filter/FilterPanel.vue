@@ -138,7 +138,7 @@ export default {
   }),
   computed: {
     selectedSortOptions() {
-      return sortOptions.filter(({ key }) => this.value.sorting.includes(key))
+      return this.value.sorting.map((key) => sortOptions.find((option) => option.key === key))
     },
     selectedGroupOption() {
       return groupOptions.find(({ key }) => key === this.value.grouping)

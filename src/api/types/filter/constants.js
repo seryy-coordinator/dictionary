@@ -7,48 +7,84 @@ export const sortOptions = [
     key: sortOption.DATE_ASC,
     label: 'Addition date',
     asc: true,
+    iteratee: (a, b) => {
+      const date1 = a.date || a.history[a.history.length - 1].date
+      const date2 = b.date || b.history[b.history.length - 1].date
+      return new Date(date1) - new Date(date2)
+    },
     connectionKey: sortOption.DATE_DESC,
   },
   {
     key: sortOption.DATE_DESC,
     label: 'Addition date',
     asc: false,
+    iteratee: (a, b) => {
+      const date1 = a.date || a.history[a.history.length - 1].date
+      const date2 = b.date || b.history[b.history.length - 1].date
+      return new Date(date2) - new Date(date1)
+    },
     connectionKey: sortOption.DATE_ASC,
   },
   {
     key: sortOption.ALPHABET_ASC,
     label: 'Alphabet',
     asc: true,
+    iteratee: (a, b) => {
+      return a.target > b.target ? 1 : -1
+    },
     connectionKey: sortOption.ALPHABET_DESC,
   },
   {
     key: sortOption.ALPHABET_DESC,
     label: 'Alphabet',
     asc: false,
+    iteratee: (a, b) => {
+      return a.target > b.target ? -1 : 1
+    },
     connectionKey: sortOption.ALPHABET_ASC,
   },
   {
     key: sortOption.RATE_ASC,
     label: 'Priority',
     asc: true,
+    iteratee: (a, b) => {
+      const rate1 = Math.max(Object.values(a.statistic).map(({ rate }) => rate))
+      const rate2 = Math.max(Object.values(b.statistic).map(({ rate }) => rate))
+      return rate1 - rate2
+    },
     connectionKey: sortOption.RATE_DESC,
   },
   {
     key: sortOption.RATE_DESC,
     label: 'Priority',
     asc: false,
+    iteratee: (a, b) => {
+      const rate1 = Math.max(Object.values(a.statistic).map(({ rate }) => rate))
+      const rate2 = Math.max(Object.values(b.statistic).map(({ rate }) => rate))
+      return rate2 - rate1
+    },
     connectionKey: sortOption.RATE_ASC,
   },
   {
     key: sortOption.ADDITION_COUNT_ASC,
     label: 'Count of addition',
     asc: true,
+    iteratee: (a, b) => {
+      const count1 = a.history.length
+      const count2 = b.history.length
+      return count1 - count2
+    },
     connectionKey: sortOption.ADDITION_COUNT_DESC,
   },
   {
     key: sortOption.ADDITION_COUNT_DESC,
     label: 'Count of addition',
     asc: false,
+    iteratee: (a, b) => {
+      const count1 = a.history.length
+      const count2 = b.history.length
+      return count2 - count1
+    },
     connectionKey: sortOption.ADDITION_COUNT_ASC,
   },
 ]
