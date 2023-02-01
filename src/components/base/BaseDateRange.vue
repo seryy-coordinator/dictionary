@@ -62,9 +62,7 @@ export default {
       handler(newValue) {
         this.period = newValue.period
         if (this.period) {
-          const selectedPeriod = datePeriods.find(({ key }) => key === this.period)
-          this.range = dateRangeSchema({ start: selectedPeriod.getStartDate(), end: new Date() })
-          return
+          this.setRangeByPeriod()
         }
         this.range = newValue.range?.start
           ? {
@@ -79,21 +77,29 @@ export default {
   methods: {
     selectPeriod({ key }) {
       this.period = key
+      this.setRangeByPeriod()
       this.updateValue()
     },
-    updateValue() {
-      this.$emit('update:modelValue', {
-        period: this.period,
-        range: this.range,
-      })
+    setRangeByPeriod() {
+      const selectedPeriod = datePeriods.find(({ key }) => key === this.period)
+      this.range = dateRangeSchema({ start: selectedPeriod.getStartDate(), end: new Date() })
     },
     setRange() {
       this.period = null
-      this.range = dateRangeSchema({
-        start: getShortDate(this.range.start),
-        end: getShortDate(this.range.end),
-      })
       this.updateValue()
+    },
+    updateValue() {
+      const range = this.range?.start
+        ? dateRangeSchema({
+            start: getShortDate(this.range.start),
+            end: getShortDate(this.range.end),
+          })
+        : this.range
+
+      this.$emit('update:modelValue', {
+        period: this.period,
+        range,
+      })
     },
     closeDatePicker(event) {
       if (!this.isOpen) {

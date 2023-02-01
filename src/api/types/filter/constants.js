@@ -8,9 +8,9 @@ export const sortOptions = [
     label: 'Addition date',
     asc: true,
     iteratee: (a, b) => {
-      const date1 = a.date || a.history[a.history.length - 1].date
-      const date2 = b.date || b.history[b.history.length - 1].date
-      return new Date(date1) - new Date(date2)
+      const date1 = a.date || new Date(a.history[a.history.length - 1].date)
+      const date2 = b.date || new Date(b.history[b.history.length - 1].date)
+      return date1 - date2
     },
     connectionKey: sortOption.DATE_DESC,
   },
@@ -19,9 +19,9 @@ export const sortOptions = [
     label: 'Addition date',
     asc: false,
     iteratee: (a, b) => {
-      const date1 = a.date || a.history[a.history.length - 1].date
-      const date2 = b.date || b.history[b.history.length - 1].date
-      return new Date(date2) - new Date(date1)
+      const date1 = a.date || new Date(a.history[a.history.length - 1].date)
+      const date2 = b.date || new Date(b.history[b.history.length - 1].date)
+      return date2 - date1
     },
     connectionKey: sortOption.DATE_ASC,
   },

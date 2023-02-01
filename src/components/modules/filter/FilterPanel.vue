@@ -162,7 +162,7 @@ export default {
       return ''
     },
     getAuthors() {
-      const authors = this.collection.flatMap(({ history }) => history.map(({ author }) => author))
+      const authors = this.collection.flatMap(({ history }) => history.map(({ authorId }) => authorId))
       return uniq(authors).map((id) =>
         id ? this.teachers.find(({ _id }) => _id === id) : { ...this.currentUser, name: 'Me' }
       )

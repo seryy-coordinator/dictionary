@@ -30,12 +30,13 @@
 </template>
 
 <script>
-import { cloneDeep, groupBy } from 'lodash-es'
+import { cloneDeep, groupBy, uniq } from 'lodash-es'
 import { get } from 'vuex-pathify'
 
 import FilterPanel from './filter/FilterPanel.vue'
 import { voiceText } from '../../api/utilities/speech'
-import { schema, sortOptions } from '../../api/types/filter'
+import { schema, sortOptions, status, datePeriods, dateRangeSchema } from '../../api/types/filter'
+import { toLocaleTime } from '../../api/utilities/date'
 
 export default {
   name: 'ExpressionList',
@@ -62,13 +63,31 @@ export default {
         : this.getFiltered
     },
     getFiltered() {
-      // TODO: will implement later
-      return this.getExpressionsWithHistory
+      const { authors, labels, categories, status, date } = this.config.filters || {}
+      const startDate = date.range?.start ? new Date(date.range.start) : null
+      const endDate = date.range?.end ? new Date(date.range.end) : null
+      return this.getMapped.filter(
+        (expression) =>
+          (!authors?.length || authors.some((id) => expression.authors.includes(id))) &&
+          (!labels?.length || labels.some((label) => expression.labels.includes(label))) &&
+          (!categories?.length || categories.some((category) => expression.statistic[category])) &&
+          (!status || expression.status === status) &&
+          (!startDate || (expression.date >= startDate && expression.date <= endDate))
+      )
     },
-    getExpressionsWithHistory() {
-      return this.config.grouping
-        ? this.getExpressions.flatMap((expression) => expression.history.map((item) => ({ ...expression, ...item })))
-        : this.getExpressions
+    getMapped() {
+      const { categories } = this.config.filters || {}
+      return this.getExpressions.map((expression) => {
+        let statistic = Object.keys(expression.statistic).map((key) => ({ key, rate: expression.statistic[key].rate }))
+        statistic = categories.length ? statistic.filter((item) => statistic.includes(item.key)) : statistic
+
+        return {
+          ...expression,
+          authors: this.getAuthors(expression),
+          date: toLocaleTime(expression.history[expression.history.length - 1].date),
+          status: statistic.every(({ rate }) => !rate) ? status.LEARNED : status.STUDIED,
+        }
+      })
     },
     currentUser: get('users/user', false),
     getExpressions: get('expressions/collection', false),
@@ -76,8 +95,17 @@ export default {
   created() {
     const config = schema(this.currentUser.configs?.dictionary ?? {})
     this.config = cloneDeep(config)
+
+    if (this.config.filters.date.period) {
+      const selectedPeriod = datePeriods.find(({ key }) => key === this.period)
+      this.config.filters.date.range = dateRangeSchema({ start: selectedPeriod.getStartDate(), end: new Date() })
+    }
   },
   methods: {
+    getAuthors(expression) {
+      const authors = expression.history.map(({ authorId }) => authorId)
+      return uniq(authors).map((id) => id || this.currentUser._id)
+    },
     voiceText,
   },
 }
