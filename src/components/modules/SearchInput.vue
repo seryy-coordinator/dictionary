@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-80">
+  <div class="relative w-80 z-10">
     <div class="flex flex-col gap-1 p-1 border border-gray-100">
       <va-input v-model="enText" :loading="loading" label="En" @update:modelValue="search()" @blur="loadAfterBlur()" />
       <va-input v-model="ruText" label="Ru" id="ruText">
@@ -19,6 +19,10 @@
         class="my-1 py-1 px-3"
         @mousedown="selectExpression(expression)"
       >
+        <!-- date -->
+        <!-- author -->
+        <!-- categories and status for each -->
+        <!-- labels -->
         <p v-if="expression.target" class="leading-4">{{ expression.target }}</p>
         <p class="text-xs text-gray-600">{{ expression.translate }}</p>
       </li>

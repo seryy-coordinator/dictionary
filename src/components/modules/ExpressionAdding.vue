@@ -51,7 +51,7 @@ export default {
     getDictionaryCategories() {
       return dictionaryCategories.map((category) => ({ ...category, title: category.description }))
     },
-    ...get('expressions', { getExpressions: 'collection' }, false),
+    ...get('expressions', { getExpressions: 'getExpressions' }, false),
     ...get('users', { user: 'user' }, false),
   },
   created() {
