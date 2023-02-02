@@ -150,7 +150,7 @@ export default {
       return statuses.find(({ key }) => key === this.value.filters?.status)
     },
     selectedCategories() {
-      return dictionaryCategories.filter(({ value }) => this.value.filters?.categories.includes(value))
+      return dictionaryCategories.filter(({ key }) => this.value.filters?.categories.includes(key))
     },
     selectedDateRange() {
       if (this.value.filters?.date.period) {

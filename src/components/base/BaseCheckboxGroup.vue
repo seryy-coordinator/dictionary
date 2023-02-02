@@ -4,10 +4,10 @@
     <span v-if="icon" class="mr-1 material-icons">{{ icon }}</span>
     <div
       v-for="option in getOptions"
-      :key="option.value"
+      :key="option.key"
       :class="[
         optionClasses,
-        modelValue.includes(option.value)
+        modelValue.includes(option.key)
           ? 'bg-blue-400 text-white border-blue-500'
           : 'bg-gray-300 hover:bg-gray-400 opacity-20 border-transparent',
       ]"
@@ -18,8 +18,8 @@
       <img
         v-else-if="option.image"
         :src="option.image"
-        :alt="option.label || option.value"
-        :class="[getImageClasses, { 'filter-white': modelValue.includes(option.value) }]"
+        :alt="option.label || option.key"
+        :class="[getImageClasses, { 'filter-white': modelValue.includes(option.key) }]"
       />
       <span v-if="option.label" :class="labelClasses"> {{ option.label }}</span>
     </div>
@@ -106,9 +106,9 @@ export default {
   },
   methods: {
     select(option) {
-      const value = this.modelValue.includes(option.value)
-        ? this.modelValue.filter((key) => key !== option.value)
-        : [...this.modelValue, option.value]
+      const value = this.modelValue.includes(option.key)
+        ? this.modelValue.filter((key) => key !== option.key)
+        : [...this.modelValue, option.key]
       this.$emit('update:modelValue', value)
     },
   },

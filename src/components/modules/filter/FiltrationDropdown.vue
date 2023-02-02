@@ -101,7 +101,7 @@ export default {
       const categories = this.collection.flatMap(({ statistic }) => Object.keys(statistic))
       return uniq(categories).map((key) => {
         const val = Number(key)
-        return dictionaryCategories.find(({ value }) => value === val)
+        return dictionaryCategories.find(({ key }) => key === val)
       })
     },
     currentUser: get('users/user', false),

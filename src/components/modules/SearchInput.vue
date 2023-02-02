@@ -4,7 +4,11 @@
       <va-input v-model="enText" :loading="loading" label="En" @update:modelValue="search()" @blur="loadAfterBlur()" />
       <va-input v-model="ruText" label="Ru" id="ruText">
         <template #append>
-          <va-button :disabled="!getEnText || !getRuText || disabled" icon="add" @click="add()" />
+          <va-button
+            :disabled="!getEnText || !getRuText || disabled"
+            :icon="selected && selected._id ? 'upgrade' : 'add'"
+            @click="add()"
+          />
         </template>
       </va-input>
     </div>
@@ -14,17 +18,37 @@
     >
       <li
         v-for="expression in getExpressions"
-        :key="expression._id"
-        :class="{ 'hover:bg-gray-50 cursor-pointer': !disabled }"
-        class="my-1 py-1 px-3"
+        :key="expression.target + expression._id"
+        :class="{ 'hover:bg-gray-50 cursor-pointer': !disabled, 'bg-blue-50': expression._id }"
+        class="flex items-center justify-between gap-1 my-1 py-1 px-3"
         @mousedown="selectExpression(expression)"
       >
-        <!-- date -->
-        <!-- author -->
-        <!-- categories and status for each -->
-        <!-- labels -->
-        <p v-if="expression.target" class="leading-4">{{ expression.target }}</p>
-        <p class="text-xs text-gray-600">{{ expression.translate }}</p>
+        <div>
+          <p v-if="expression.target" class="leading-4">{{ expression.target }}</p>
+          <p class="text-xs text-gray-600">{{ expression.translate }}</p>
+        </div>
+        <div v-if="expression._id" class="text-[10px] text-black text-right">
+          <div class="flex items-center justify-end">
+            <base-avatar
+              v-if="expression.author"
+              :src="expression.author.picture"
+              :name="expression.author.name"
+              size="tiny"
+              class="mr-1"
+            />
+            <div class="ml-auto">
+              <va-icon
+                v-for="{ structure, rate } in expression.categories"
+                :key="structure.key"
+                :name="structure.icon"
+                size="small"
+                :color="rate ? 'danger' : 'success'"
+              />
+            </div>
+          </div>
+          <p>{{ expression.formattedDate }}</p>
+          <!-- ToDo labels -->
+        </div>
       </li>
     </ul>
   </div>
@@ -33,6 +57,7 @@
 <script>
 import { debounce } from 'lodash-es'
 import { getMiniCards, getTranscription } from '../../api/firebase/functions'
+import { getShortDate } from '../../api/utilities/date'
 
 export default {
   name: 'SearchInput',
@@ -75,7 +100,18 @@ export default {
       return []
     },
     getCoincidences() {
-      return this.getEnText ? this.collection.filter(({ target }) => target.includes(this.getEnText)) : []
+      if (this.getEnText) {
+        return this.collection
+          .filter(({ target }) => target.includes(this.getEnText))
+          .map((item) => {
+            return {
+              ...item,
+              author: item.authors[item.authors.length - 1], // item.isPersonal ? null : item.authors[item.authors.length - 1],
+              formattedDate: getShortDate(item.date),
+            }
+          })
+      }
+      return []
     },
     getExpressions() {
       if (!this.selected) {

@@ -1,5 +1,5 @@
 <template>
-  <va-avatar :src="src" :size="size">
+  <va-avatar :src="src" :size="getSize" :class="{ [`va-avatar--${size}`]: size }">
     <template v-if="name">{{ getInitials }}</template>
   </va-avatar>
 </template>
@@ -32,8 +32,18 @@ export default {
       }, '')
       return initials
     },
+    getSize() {
+      return this.size === 'tiny' ? '' : this.size
+    },
   },
 }
 </script>
 
-<style></style>
+<style>
+.va-avatar.va-avatar--tiny {
+  font-size: 0.55rem !important;
+  width: 1.2rem !important;
+  min-width: 1.2rem !important;
+  height: 1.2rem !important;
+}
+</style>

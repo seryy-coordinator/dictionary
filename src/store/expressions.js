@@ -18,7 +18,8 @@ const getters = {
   },
   getExpressions({ collection }, _, rootGetters) {
     return collection.map((item) => {
-      const categories = Object.keys(item.statistic).map((key) => {
+      const categories = Object.keys(item.statistic).map((value) => {
+        const key = Number(value)
         const structure = dictionaryCategories.find((category) => category.key === key)
         return {
           key,
