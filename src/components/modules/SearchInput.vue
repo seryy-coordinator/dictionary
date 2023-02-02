@@ -106,7 +106,7 @@ export default {
           .map((item) => {
             return {
               ...item,
-              author: item.authors[item.authors.length - 1], // item.isPersonal ? null : item.authors[item.authors.length - 1],
+              author: item.isPersonal ? null : item.authors[item.authors.length - 1],
               formattedDate: getShortDate(item.date),
             }
           })
