@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-screen bg-white">
-    <TopBar class="mx-auto" />
-    <router-view class="flex-grow" />
+    <TopBar class="flex-shrink-0" />
+    <router-view class="flex-grow overflow-auto" />
     <TabBar class="mx-auto" />
   </div>
 </template>

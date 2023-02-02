@@ -6,6 +6,7 @@
         :options="getDictionaryCategories"
         size="sm"
         class="border border-gray-100 p-1"
+        @update:modelValue="saveSelectedCategories()"
       />
       <div class="flex items-center gap-3 my-1 ml-4">
         <base-checkbox v-model="phrase" label="Big phrase" size="small" />
@@ -30,8 +31,9 @@ import { call, get } from 'vuex-pathify'
 
 import SearchInput from './SearchInput.vue'
 import { dictionaryCategory, dictionaryCategories } from '../../api/types/category'
-import { getFibonacciRate } from '../../api/utilities/fibonacci'
 import { getUTCTimeString } from '../../api/utilities/date'
+import { getFibonacciRate } from '../../api/utilities/fibonacci'
+import { LocalStorage } from '../../api/utilities/localStorage'
 
 export default {
   name: 'ExpressionAdding',
@@ -39,7 +41,7 @@ export default {
     SearchInput,
   },
   data: () => ({
-    selectedCategories: [dictionaryCategory.TERM],
+    selectedCategories: LocalStorage.selectedCategories || [dictionaryCategory.TERM, dictionaryCategory.DEFINITION],
     phrase: false,
     notImportant: false,
     restudy: false,
@@ -103,6 +105,9 @@ export default {
         },
         { ...oldValue }
       )
+    },
+    saveSelectedCategories() {
+      LocalStorage.selectedCategories = this.selectedCategories
     },
     ...call('expressions', ['addExpression', 'updateExpression']),
   },

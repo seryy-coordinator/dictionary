@@ -13,7 +13,7 @@ export const dateSchema = (data = {}) => ({
 export const schema = (data = {}, optimized = false) => {
   const date = dateSchema(data.filters?.dateRange)
   const value = {
-    transcriptionShown: data.transcriptionShown || false,
+    transcriptionShown: data.transcriptionShown || true,
     filterSavingEnabled: data.filterSavingEnabled || false,
     sorting: data.sorting || [],
     grouping: data.grouping || null,

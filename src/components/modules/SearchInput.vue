@@ -1,10 +1,10 @@
 <template>
   <div class="relative w-80">
     <div class="flex flex-col gap-1 p-1 border border-gray-100">
-      <va-input v-model="enText" :loading="loading" label="En" @update:modelValue="search" @blur="loadAfterBlur()" />
+      <va-input v-model="enText" :loading="loading" label="En" @update:modelValue="search()" @blur="loadAfterBlur()" />
       <va-input v-model="ruText" label="Ru" id="ruText">
         <template #append>
-          <va-button :disabled="!enText || !ruText || disabled" icon="add" @click="add()" />
+          <va-button :disabled="!getEnText || !getRuText || disabled" icon="add" @click="add()" />
         </template>
       </va-input>
     </div>
@@ -55,17 +55,23 @@ export default {
     loading: false,
   }),
   computed: {
+    getEnText() {
+      return this.enText.replace(/\s+/g, ' ')
+    },
+    getRuText() {
+      return this.ruText.replace(/\s+/g, ' ')
+    },
     getTranslates() {
-      const suggestion = this.suggestions.find(({ target }) => target === this.enText)
+      const suggestion = this.suggestions.find(({ target }) => target === this.getEnText)
       if (suggestion) {
         const suggestions = suggestion.translate.split(/[;,]+/)
         const translates = suggestions.length > 1 ? [suggestion.translate, ...suggestions] : [suggestion.translate]
-        return translates.filter((translate) => translate.includes(this.ruText)).map((translate) => ({ translate }))
+        return translates.filter((translate) => translate.includes(this.getRuText)).map((translate) => ({ translate }))
       }
       return []
     },
     getCoincidences() {
-      return this.enText ? this.collection.filter(({ target }) => target.includes(this.enText)) : []
+      return this.getEnText ? this.collection.filter(({ target }) => target.includes(this.getEnText)) : []
     },
     getExpressions() {
       if (!this.selected) {
@@ -85,11 +91,11 @@ export default {
       if (this.selected._id) {
         this.$emit('select', this.selected)
       } else {
-        const transcription = this.phrase ? await this.transcriptionRequest : ''
+        const transcription = this.phrase ? '' : await this.transcriptionRequest
         const selected = {
           ...this.selected,
           transcription,
-          translate: this.selected.translate || this.ruText,
+          translate: this.selected.translate || this.getRuText,
         }
         this.$emit('select-new', selected)
       }
@@ -117,31 +123,31 @@ export default {
       }
     },
     async loadSuggestions() {
-      if (this.enText && this.enText !== this.selected?.target) {
+      if (this.getEnText && this.getEnText !== this.selected?.target) {
         this.loading = true
-        this.suggestions = await getMiniCards(this.enText)
+        this.suggestions = await getMiniCards(this.getEnText)
         this.loading = false
       }
     },
     async getTranscription() {
-      this.transcriptionRequest = getTranscription(this.enText)
+      this.transcriptionRequest = getTranscription(this.getEnText)
     },
     loadAfterBlur() {
       if (!this.selected) {
         this.loadSuggestions()
         this.selected = {
-          target: this.enText,
+          target: this.getEnText,
           translate: '',
         }
       }
-      if (!this.selected?._id && this.enText && !this.phrase) {
+      if (!this.selected?._id && this.getEnText && !this.phrase) {
         this.getTranscription()
       }
     },
-    search(enText) {
+    search() {
       this.suggestions = []
       this.selected = null
-      if (enText.length > 3) {
+      if (this.getEnText.length > 3) {
         this.debounceLoading()
       }
     },

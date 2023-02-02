@@ -1,4 +1,5 @@
 import { sortOption, groupOption, status, datePeriod } from './enums'
+import { addDays, addMonths } from '../../utilities/date'
 
 export const MAX_SORT_OPTIONS = 2
 
@@ -137,41 +138,21 @@ export const datePeriods = [
   {
     key: datePeriod.WEEK,
     label: 'Past week',
-    getStartDate() {
-      const days = -7
-      const date = new Date()
-      date.setDate(date.getDate() + days)
-      return date
-    },
+    getStartDate: () => addDays(new Date(), -7),
   },
   {
     key: datePeriod.MONTH,
     label: 'Past month',
-    getStartDate() {
-      const months = -1
-      const date = new Date()
-      date.setMonth(date.getMonth() + months)
-      return date
-    },
+    getStartDate: () => addMonths(new Date(), -1),
   },
   {
     key: datePeriod.THREE_MONTHS,
     label: 'Past three month',
-    getStartDate() {
-      const months = -3
-      const date = new Date()
-      date.setMonth(date.getMonth() + months)
-      return date
-    },
+    getStartDate: () => addMonths(new Date(), -3),
   },
   {
     key: datePeriod.YEAR,
     label: 'Past year',
-    getStartDate() {
-      const months = -12
-      const date = new Date()
-      date.setMonth(date.getMonth() + months)
-      return date
-    },
+    getStartDate: () => addMonths(new Date(), -12),
   },
 ]
