@@ -72,6 +72,7 @@ export default {
         phrase: this.phrase,
         // labels // TODO: will add later
       })
+      this.addNotification(`The phrase '${target}' was added successfully.`)
       this.saving = false
     },
     async updateExpressionStatistic(expression) {
@@ -85,6 +86,9 @@ export default {
         phrase: this.phrase,
         // labels // TODO: will add later
       })
+      this.addNotification(
+        `The phrase \`${expression.target}\` was <strong class="text-green-600">updated</strong> successfully.`
+      )
       this.saving = false
     },
     getHistoryRecord() {
@@ -109,6 +113,7 @@ export default {
     saveSelectedCategories() {
       LocalStorage.selectedCategories = this.selectedCategories
     },
+    addNotification: call('notification/addSuccess'),
     ...call('expressions', ['addExpression', 'updateExpression']),
   },
 }

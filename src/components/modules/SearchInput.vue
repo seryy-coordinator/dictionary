@@ -18,7 +18,7 @@
     >
       <li
         v-for="expression in getExpressions"
-        :key="expression.target + expression._id"
+        :key="expression._id || expression.target"
         :class="{ 'hover:bg-gray-50 cursor-pointer': !disabled, 'bg-blue-50': expression._id }"
         class="flex items-center justify-between gap-1 my-1 py-1 px-3"
         @mousedown="selectExpression(expression)"

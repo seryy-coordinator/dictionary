@@ -26,7 +26,6 @@ export function getFibonacciRate(num = 0) {
   if (num) {
     const oldValue = Math.max(num, MIN_RATE)
     const nearest = getNearestFibonacci(oldValue)
-    console.log(nearest)
     const minIncrease = 2
     return nearest - oldValue >= minIncrease ? nearest : getNextFibonacci(nearest)
   }

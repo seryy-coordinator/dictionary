@@ -1,5 +1,6 @@
 import {
   createVuesticEssential,
+  VaAlert,
   VaAvatar,
   VaButton,
   VaButtonGroup,
@@ -22,6 +23,7 @@ import 'vuestic-ui/styles/typography.css'
 
 const config = createVuesticEssential({
   components: {
+    VaAlert,
     VaAvatar,
     VaButton,
     VaButtonGroup,

@@ -10,7 +10,7 @@
           <li
             v-for="expression in group"
             :key="expression._id"
-            class="flex items-center my-1 p-1 gap-1 hover:bg-gray-50"
+            class="flex items-center my-1 p-2 gap-1 bg-gray-50 hover:bg-gray-100"
           >
             <strong class="font-medium">{{ expression.target }}</strong>
             <span v-show="config.transcriptionShown && expression.transcription" class="text-gray-600">
@@ -25,6 +25,35 @@
             />
             <span class="mx-1">-</span>
             <span class="text-gray-600">{{ expression.translate }}</span>
+            <div class="ml-auto text-[10px] text-black text-right">
+              <div class="flex items-center gap-1 justify-end">
+                <div v-if="expression.isPersonal" class="relative z-0">
+                  <base-avatar
+                    v-for="(author, index) in expression.authors"
+                    :key="author._id"
+                    :src="author.picture"
+                    :name="author.name"
+                    size="tiny"
+                    class="mr-1 hover:z-10 relative"
+                    :style="`left:${-10 * index}px`"
+                  />
+                </div>
+                <div class="w-16 ml-auto">
+                  <template v-for="{ structure, rate } in expression.categories">
+                    <va-icon
+                      v-if="rate"
+                      :key="structure.key"
+                      :name="structure.icon"
+                      size="small"
+                      class="text-gray-500"
+                    />
+                  </template>
+                </div>
+              </div>
+              <div class="flex items-center gap-1">
+                <p v-for="label in expression.labels" :key="label" class="bg-blue-100 rounded-sm">{{ label }}</p>
+              </div>
+            </div>
           </li>
         </ul>
       </li>
@@ -74,14 +103,13 @@ export default {
     getFiltered() {
       const { authors, labels, categories, status, date } = this.config.filters || {}
       const startDate = date.range?.start ? new Date(date.range.start) : null
-      const endDate = date.range?.end ? new Date(date.range.end) : null
       return this.getMapped.filter(
         (expression) =>
           (!authors?.length || expression.authors.some(({ _id }) => authors.includes(_id))) &&
           (!labels?.length || labels.some((label) => expression.labels.includes(label))) &&
           (!categories?.length || categories.some((category) => expression.statistic[category])) &&
           (!status || expression.status === status) &&
-          (!startDate || (expression.date >= startDate && expression.date <= endDate))
+          (!startDate || (expression.date >= startDate && expression.date <= this.getEndDate))
       )
     },
     getMapped() {
@@ -96,6 +124,13 @@ export default {
           status: statistic.every(({ rate }) => !rate) ? status.LEARNED : status.STUDIED,
         }
       })
+    },
+    getEndDate() {
+      const { date } = this.config.filters || {}
+      if (date.range?.end) {
+        return date.period ? new Date() : new Date(date.range.end)
+      }
+      return null
     },
     currentUser: get('users/user', false),
     getExpressions: get('expressions/getExpressions', false),
