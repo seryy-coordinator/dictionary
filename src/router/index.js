@@ -13,6 +13,7 @@ import Games from '../views/Games.vue'
 import Contacts from '../views/Contacts.vue'
 import Students from '../views/Students.vue'
 import Profile from '../views/Profile.vue'
+import Admin from '../views/Admin.vue'
 
 const routes = [
   {
@@ -59,6 +60,11 @@ const routes = [
         component: Settings,
       },
     ],
+  },
+  {
+    path: '/manager',
+    name: 'Admin page',
+    component: Admin,
   },
 ]
 

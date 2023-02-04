@@ -9,6 +9,7 @@ import {
   query,
   limit,
   where,
+  deleteDoc,
 } from 'firebase/firestore/lite'
 
 import { getFirestore } from '../firebase/firestore.js'
@@ -63,13 +64,14 @@ export default class Base {
     }
   }
 
-  // delete(id) {
-  //   try {
-  //     return this.collectionRef.doc(id).delete()
-  //   } catch (error) {
-  //     throw new Error(error)
-  //   }
-  // }
+  async delete(id) {
+    try {
+      const docRef = doc(this.collectionRef, id)
+      await deleteDoc(docRef)
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
 
   // readCollection() {
   //   try {
