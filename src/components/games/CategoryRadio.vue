@@ -4,12 +4,12 @@
       v-for="option in dictionaryCategories"
       :key="option.key"
       :class="[
-        modelValue === option
+        modelValue === option.key
           ? 'bg-blue-400 text-white border-blue-500'
           : 'bg-gray-300 hover:bg-gray-400 opacity-20 border-transparent',
       ]"
       class="flex flex-col items-center p-1 cursor-pointer font-bold border sm:w-24 w-20"
-      @click="$emit('update:modelValue')"
+      @click="$emit('update:modelValue', option.key)"
     >
       <va-icon :name="option.icon" />
       <span class="sm:text-xs text-[11px]"> {{ option.label }}</span>
@@ -24,7 +24,7 @@ export default {
   name: 'CategoryRadio',
   props: {
     modelValue: {
-      type: Number,
+      type: String,
       default: null,
     },
   },

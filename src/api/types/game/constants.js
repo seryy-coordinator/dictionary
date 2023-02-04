@@ -1,12 +1,13 @@
 import { game } from './enums'
+import { dictionaryCategory } from '../category'
 
 export const games = [
   {
     key: game.CARD,
     title: 'Card',
-    description: 'bla bla bla',
+    description: 'Watch repeat and remember',
     icon: 'style',
-    notImplemented: true,
+    categories: [dictionaryCategory.TERM],
   },
   {
     key: game.MEMORIZATION,
@@ -16,11 +17,22 @@ export const games = [
     notImplemented: true,
   },
   {
-    key: game.SPELLING,
+    key: game.SPELLING_AFTER_AUDIO,
+    title: 'Spelling (audio)',
+    description: 'bla bla bla',
+    icon: 'keyboard',
+    notImplemented: true,
+    exam: true,
+    categories: [dictionaryCategory.SPELLING],
+  },
+  {
+    key: game.SPELLING_AFTER_TRANSLATE,
     title: 'Spelling',
     description: 'bla bla bla',
     icon: 'keyboard',
     notImplemented: true,
+    exam: true,
+    categories: [dictionaryCategory.SPELLING, dictionaryCategory.DEFINITION],
   },
   {
     key: game.QUESTION,

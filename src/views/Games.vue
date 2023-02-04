@@ -1,11 +1,12 @@
 <template>
   <div>
     <div class="flex flex-col gap-2 p-4">
-      <CategoryRadio v-model="selectedGame" />
+      <CategoryRadio v-model="selectedCategory" />
       <Filters v-model:dateValue="date" v-model:labelsValue="selectedLabels" v-model:authorsValue="selectedAuthors" />
     </div>
     <Education />
     <GameList v-model="selectedGame" :category="selectedCategory" />
+    <GameModal :collection="getFiltered" :game="selectedGame" @close="selectedGame = null" />
   </div>
 </template>
 
@@ -16,8 +17,10 @@ import CategoryRadio from '../components/games/CategoryRadio.vue'
 import Education from '../components/common/Education.vue'
 import GameList from '../components/games/GameList.vue'
 import Filters from '../components/games/Filters.vue'
+import GameModal from '../components/games/GameModal.vue'
 
 import { dateSchema } from '../api/types/filter'
+import { dictionaryCategory } from '../api/types/category'
 
 export default {
   name: 'Games',
@@ -26,9 +29,10 @@ export default {
     Education,
     GameList,
     Filters,
+    GameModal,
   },
   data: () => ({
-    selectedCategory: null,
+    selectedCategory: dictionaryCategory.TERM,
     selectedGame: null,
     date: dateSchema(),
     selectedLabels: [],

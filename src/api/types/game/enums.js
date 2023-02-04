@@ -1,7 +1,8 @@
 export const game = {
   CARD: 'card',
   MEMORIZATION: 'memorization',
-  SPELLING: 'spelling',
+  SPELLING_AFTER_AUDIO: 'spelling_audio',
+  SPELLING_AFTER_TRANSLATE: 'spelling_translate',
   QUESTION: 'question',
   READING: 'reading',
 }

@@ -1,10 +1,10 @@
 <template>
-  <ul class="flex flex-wrap justify-center gap-2 p-4">
+  <ul class="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-2 p-4">
     <li
-      v-for="game in games"
+      v-for="game in getGames"
       :key="game.key"
       :class="game.notImplemented ? 'opacity-50' : 'cursor-pointer'"
-      class="w-[230px] flex gap-1 p-2 bg-blue-50 border border-blue-100 rounded select-none"
+      class="flex gap-1 p-2 bg-blue-50 border border-blue-100 rounded select-none"
       @click="selectGame(game)"
     >
       <va-icon :name="game.icon" size="3rem" color="info" />
@@ -23,22 +23,21 @@ export default {
   name: 'GameList',
   props: {
     modelValue: {
-      type: String,
+      type: Object,
       default: null,
     },
     category: {
-      type: Number,
+      type: String,
       default: null,
     },
   },
   emits: ['update:modelValue'],
   data: () => ({
     selectedGame: null,
-    games,
   }),
   computed: {
     getGames() {
-      return this.games.filter(({ categories }) => !categories || categories.includes(this.category))
+      return games.filter(({ categories }) => !categories || categories.includes(this.category))
     },
   },
   methods: {
