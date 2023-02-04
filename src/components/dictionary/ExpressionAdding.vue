@@ -72,7 +72,14 @@ export default {
         phrase: this.phrase,
         // labels // TODO: will add later
       })
-      this.addNotification(`The phrase '${target}' was added successfully.`)
+      this.$vaToast.init({
+        message: `The phrase '${target}' was added successfully.`,
+        position: 'bottom-right',
+        offsetX: 30,
+        offsetY: 40,
+        duration: 3000,
+        color: 'success',
+      })
       this.saving = false
     },
     async updateExpressionStatistic(expression) {
@@ -86,9 +93,15 @@ export default {
         phrase: this.phrase,
         // labels // TODO: will add later
       })
-      this.addNotification(
-        `The phrase \`${expression.target}\` was <strong class="text-green-600">updated</strong> successfully.`
-      )
+      this.$vaToast.init({
+        message: `The phrase \`${expression.target}\` was <strong>updated</strong> successfully.`,
+        position: 'bottom-right',
+        offsetX: 30,
+        offsetY: 40,
+        duration: 3000,
+        color: 'success',
+        dangerouslyUseHtmlString: true,
+      })
       this.saving = false
     },
     getHistoryRecord() {
@@ -113,7 +126,6 @@ export default {
     saveSelectedCategories() {
       LocalStorage.selectedCategories = this.selectedCategories
     },
-    addNotification: call('notification/addSuccess'),
     ...call('expressions', ['addExpression', 'updateExpression']),
   },
 }

@@ -16,6 +16,7 @@ import {
   VaNavbar,
   VaNavbarItem,
   VaSelect,
+  VaToastPlugin,
 } from 'vuestic-ui'
 
 import 'vuestic-ui/styles/essential.css'
@@ -40,6 +41,7 @@ const config = createVuesticEssential({
     VaNavbarItem,
     VaSelect,
   },
+  plugins: { VaToastPlugin },
   config: {
     colors: {
       variables: {

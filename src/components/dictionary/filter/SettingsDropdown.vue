@@ -22,11 +22,17 @@
         label="Enable filter saving"
         @update:modelValue="$emit('update:filterSavingEnabled', $event), $emit('update')"
       />
+      <hr class="my-2 border-gray-100" />
+      <va-button icon-right="volume_up" class="flex ml-auto" size="small" @click="updateVoices()">
+        Change voices
+      </va-button>
     </va-dropdown-content>
   </va-dropdown>
 </template>
 
 <script>
+import { initializeUtterances } from '../../../api/utilities/speech'
+
 export default {
   name: 'SettingsDropdown',
   props: {
@@ -40,6 +46,19 @@ export default {
     },
   },
   emits: ['update:transcriptionShown', 'update:filterSavingEnabled', 'update'],
+  methods: {
+    updateVoices() {
+      initializeUtterances()
+      this.$vaToast.init({
+        message: 'Voices updated!',
+        position: 'bottom-right',
+        offsetX: 30,
+        offsetY: 40,
+        duration: 3000,
+        color: 'success',
+      })
+    },
+  },
 }
 </script>
 

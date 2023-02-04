@@ -21,13 +21,13 @@
               preset="plain"
               icon="volume_up"
               size="small"
-              @click="voiceText(expression.target)"
+              @click="voiceEnText(expression.target)"
             />
             <span class="mx-1">-</span>
             <span class="text-gray-600">{{ expression.translate }}</span>
             <div class="ml-auto text-[10px] text-black text-right">
               <div class="flex items-center gap-1 justify-end">
-                <div v-if="expression.isPersonal" class="relative z-0">
+                <div v-if="!expression.isPersonal" class="relative z-0">
                   <base-avatar
                     v-for="(author, index) in expression.authors"
                     :key="author._id"
@@ -69,7 +69,7 @@ import FilterPanel from './filter/FilterPanel.vue'
 import { schema, sortOption, sortOptions, status, datePeriods, dateRangeSchema } from '../../api/types/filter'
 import { getGroup } from '../../api/utilities/date'
 import { LocalStorage } from '../../api/utilities/localStorage'
-import { voiceText } from '../../api/utilities/speech'
+import { voiceEnText } from '../../api/utilities/speech'
 
 export default {
   name: 'ExpressionList',
@@ -152,7 +152,7 @@ export default {
         delete LocalStorage.dictionaryConfig
       }
     },
-    voiceText,
+    voiceEnText,
   },
 }
 </script>
