@@ -1,36 +1,34 @@
 <template>
   <div>
-    <!-- <FilterPanel v-model="config" :collection="getExpressions" @update:modelValue="saveConfig()" /> -->
-    <div>
-      <!-- Categories -->
+    <div class="flex flex-col gap-2 p-4">
+      <CategoryRadio v-model="selectedGame" />
+      <va-button color="info" preset="plainOpacity" icon="tune" size="large" />
     </div>
-    <div class="flex gap-1">
-      <div></div>
-    </div>
+    <Education />
+    <GameList v-model="selectedGame" :category="selectedCategory" />
   </div>
 </template>
 
 <script>
-import { cloneDeep } from 'lodash-es'
+import { get } from 'vuex-pathify'
 
-import FilterPanel from '../components//modules/filter/FilterPanel.vue'
-import { schema, datePeriods, dateRangeSchema } from '../api/types/filter'
-import { LocalStorage } from '../api/utilities/localStorage'
+import CategoryRadio from '../components/games/CategoryRadio.vue'
+import Education from '../components/common/Education.vue'
+import GameList from '../components/games/GameList.vue'
 
 export default {
   name: 'Games',
-  components: { FilterPanel },
+  components: {
+    CategoryRadio,
+    Education,
+    GameList,
+  },
   data: () => ({
-    config: null,
+    selectedCategory: null,
+    selectedGame: null,
   }),
-  created() {
-    const config = schema(LocalStorage.gamesConfig || {})
-    this.config = cloneDeep(config)
-
-    if (this.config.filters.date.period) {
-      const selectedPeriod = datePeriods.find(({ key }) => key === this.period)
-      this.config.filters.date.range = dateRangeSchema({ start: selectedPeriod.getStartDate(), end: new Date() })
-    }
+  computed: {
+    getExpressions: get('expressions/getExpressions', false),
   },
 }
 </script>
