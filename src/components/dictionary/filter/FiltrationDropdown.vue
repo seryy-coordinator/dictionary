@@ -99,10 +99,7 @@ export default {
     },
     getCategories() {
       const categories = this.collection.flatMap(({ statistic }) => Object.keys(statistic))
-      return uniq(categories).map((key) => {
-        const val = Number(key)
-        return dictionaryCategories.find(({ key }) => key === val)
-      })
+      return uniq(categories).map((val) => dictionaryCategories.find(({ key }) => key === val))
     },
     currentUser: get('users/user', false),
     teachers: get('users/teachers', false),

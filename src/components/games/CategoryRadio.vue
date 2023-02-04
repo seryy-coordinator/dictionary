@@ -4,7 +4,7 @@
       v-for="option in dictionaryCategories"
       :key="option.key"
       :class="[
-        selectedCategory === option
+        modelValue === option
           ? 'bg-blue-400 text-white border-blue-500'
           : 'bg-gray-300 hover:bg-gray-400 opacity-20 border-transparent',
       ]"

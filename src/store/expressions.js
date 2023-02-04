@@ -18,8 +18,7 @@ const getters = {
   },
   getExpressions({ collection }, _, rootGetters) {
     return collection.map((item) => {
-      const categories = Object.keys(item.statistic).map((value) => {
-        const key = Number(value)
+      const categories = Object.keys(item.statistic).map((key) => {
         const structure = dictionaryCategories.find((category) => category.key === key)
         return {
           key,
@@ -29,7 +28,8 @@ const getters = {
       })
       const authorIds = item.history.map(({ authorId }) => authorId)
       const { user, teachers } = rootGetters.users
-      const authors = uniq(authorIds).map((id) => (id ? teachers.find(({ _id }) => _id === id) : user))
+      const currentUser = { ...user, title: 'Me' }
+      const authors = uniq(authorIds).map((id) => (id ? teachers.find(({ _id }) => _id === id) : currentUser))
       const isPersonal = authors.some(({ _id }) => _id === user._id)
 
       return {
