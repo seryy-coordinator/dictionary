@@ -3,11 +3,12 @@ import { dictionaryCategory } from '../category'
 
 export const games = [
   {
-    key: game.CARD,
-    title: 'Card',
+    key: game.CARDS,
+    title: 'Cards',
     description: 'Watch repeat and remember',
     icon: 'style',
     categories: [dictionaryCategory.TERM],
+    componentName: 'Cards',
   },
   {
     key: game.MEMORIZATION,

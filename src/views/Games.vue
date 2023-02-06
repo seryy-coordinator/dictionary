@@ -4,7 +4,7 @@
       <CategoryRadio v-model="selectedCategory" />
       <Filters v-model:dateValue="date" v-model:labelsValue="selectedLabels" v-model:authorsValue="selectedAuthors" />
     </div>
-    <Education />
+    <education />
     <GameList v-model="selectedGame" :category="selectedCategory" />
     <GameModal :collection="getFiltered" :game="selectedGame" @close="selectedGame = null" />
   </div>
@@ -14,7 +14,6 @@
 import { get } from 'vuex-pathify'
 
 import CategoryRadio from '../components/games/CategoryRadio.vue'
-import Education from '../components/common/Education.vue'
 import GameList from '../components/games/GameList.vue'
 import Filters from '../components/games/Filters.vue'
 import GameModal from '../components/games/GameModal.vue'
@@ -26,7 +25,6 @@ export default {
   name: 'Games',
   components: {
     CategoryRadio,
-    Education,
     GameList,
     Filters,
     GameModal,

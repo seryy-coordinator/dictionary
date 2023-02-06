@@ -16,13 +16,7 @@
             <span v-show="config.transcriptionShown && expression.transcription" class="text-gray-600">
               [{{ expression.transcription }}]
             </span>
-            <va-button
-              color="info"
-              preset="plain"
-              icon="volume_up"
-              size="small"
-              @click="voiceEnText(expression.target)"
-            />
+            <voice-button :expression="expression" />
             <span class="mx-1">-</span>
             <span class="text-gray-600">{{ expression.translate }}</span>
             <div class="ml-auto text-[10px] text-black text-right">
@@ -69,7 +63,6 @@ import FilterPanel from './filter/FilterPanel.vue'
 import { schema, sortOption, sortOptions, status, datePeriods, dateRangeSchema } from '../../api/types/filter'
 import { getGroup } from '../../api/utilities/date'
 import { LocalStorage } from '../../api/utilities/localStorage'
-import { voiceEnText } from '../../api/utilities/speech'
 
 export default {
   name: 'ExpressionList',
@@ -152,7 +145,6 @@ export default {
         delete LocalStorage.dictionaryConfig
       }
     },
-    voiceEnText,
   },
 }
 </script>
