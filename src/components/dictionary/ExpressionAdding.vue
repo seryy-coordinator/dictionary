@@ -41,7 +41,7 @@ export default {
     SearchInput,
   },
   data: () => ({
-    selectedCategories: LocalStorage.selectedCategories.filter((item) =>
+    selectedCategories: LocalStorage.selectedCategories?.filter((item) =>
       dictionaryCategories.some(({ key }) => key === item)
     ) || [dictionaryCategory.TERM, dictionaryCategory.DEFINITION],
     phrase: false,
