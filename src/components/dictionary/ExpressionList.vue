@@ -10,6 +10,7 @@
           <li
             v-for="expression in group"
             :key="expression._id"
+            :class="{ 'opacity-40': expression.notImportant }"
             class="flex items-center my-1 p-2 gap-1 bg-gray-50 hover:bg-gray-100"
           >
             <strong class="font-medium">{{ expression.target }}</strong>

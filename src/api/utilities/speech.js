@@ -1,11 +1,14 @@
 import { random } from 'lodash-es'
 
 const utteranceEn = new SpeechSynthesisUtterance()
+const utteranceRu = new SpeechSynthesisUtterance()
+let previous = null
 
 speechSynthesis.onvoiceschanged = initializeUtterances
 
 export function initializeUtterances() {
   initializeUtterance(utteranceEn, 'en-US')
+  initializeUtterance(utteranceRu, 'ru-RU')
 }
 
 function getVoicesByLang(langPrefix) {
@@ -34,9 +37,13 @@ function initializeUtterance(utterance, langPrefix) {
   utterance.pitch = 1
 }
 
-export function voiceEnText(text) {
+function voiceText(text, utterance) {
   const trimmed = text.trim()
-  if (!trimmed) return
-  utteranceEn.text = trimmed
-  speechSynthesis.speak(utteranceEn)
+  if (!trimmed || (speechSynthesis.speaking && previous === utterance && utterance.text === trimmed)) return
+  utterance.text = trimmed
+  speechSynthesis.speak(utterance)
+  previous = utterance
 }
+
+export const voiceEnText = (text) => voiceText(text, utteranceEn)
+export const voiceRuText = (text) => voiceText(text, utteranceRu)

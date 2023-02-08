@@ -38,6 +38,7 @@ const getters = {
         categories,
         authors,
         isPersonal,
+        notImportant: Object.keys(item.statistic).length === 0,
       }
     })
   },

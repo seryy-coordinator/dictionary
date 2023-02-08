@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { voiceEnText } from '../../api/utilities/speech'
+import { voiceEnText, voiceRuText } from '../../api/utilities/speech'
 
 export default {
   name: 'VoiceButton',
@@ -25,6 +25,8 @@ export default {
     voiceText() {
       if (this.locale === 'en') {
         voiceEnText(this.expression.target)
+      } else if (this.locale === 'ru') {
+        voiceRuText(this.expression.translate)
       }
     },
   },

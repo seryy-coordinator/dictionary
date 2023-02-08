@@ -2,7 +2,7 @@
   <div class="relative w-80 z-10">
     <div class="flex flex-col gap-1 p-1 border border-gray-100">
       <va-input v-model="enText" :loading="loading" label="En" @update:modelValue="search()" @blur="loadAfterBlur()" />
-      <va-input v-model="ruText" label="Ru" id="ruText">
+      <va-input v-model="ruText" label="Ru" id="ruText" @update:modelValue="clearTranslate()">
         <template #append>
           <va-button
             :disabled="!getEnText || !getRuText || disabled"
@@ -123,6 +123,13 @@ export default {
       return []
     },
   },
+  watch: {
+    phrase(newValue) {
+      if (!this.selected?._id && this.getEnText && !newValue) {
+        this.getTranscription()
+      }
+    },
+  },
   created() {
     this.debounceLoading = debounce(this.loadSuggestions, 500)
   },
@@ -135,7 +142,7 @@ export default {
         const selected = {
           ...this.selected,
           transcription,
-          translate: this.selected.translate || this.getRuText,
+          translate: this.getRuText,
         }
         this.$emit('select-new', selected)
       }
@@ -197,6 +204,11 @@ export default {
       this.ruText = ''
       this.selected = null
       this.suggestions = []
+    },
+    clearTranslate() {
+      if (this.selected) {
+        this.selected.translate = ''
+      }
     },
   },
 }

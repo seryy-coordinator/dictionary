@@ -41,7 +41,9 @@ export default {
     SearchInput,
   },
   data: () => ({
-    selectedCategories: LocalStorage.selectedCategories || [dictionaryCategory.TERM, dictionaryCategory.DEFINITION],
+    selectedCategories: LocalStorage.selectedCategories.filter((item) =>
+      dictionaryCategories.some(({ key }) => key === item)
+    ) || [dictionaryCategory.TERM, dictionaryCategory.DEFINITION],
     phrase: false,
     notImportant: false,
     restudy: false,
@@ -85,7 +87,7 @@ export default {
     async updateExpressionStatistic(expression) {
       this.saving = true
       const historyData = this.getHistoryRecord()
-      const statistic = this.notImportant ? {} : this.getStatistic(expression.statistic)
+      const statistic = this.getStatistic(expression.statistic)
       await this.updateExpression({
         ...expression,
         statistic,
@@ -113,6 +115,10 @@ export default {
       }
     },
     getStatistic(oldValue = {}) {
+      if (this.notImportant) {
+        return {}
+      }
+
       return this.selectedCategories.reduce(
         (acc, key) => {
           acc[key] = acc[key] || {}
