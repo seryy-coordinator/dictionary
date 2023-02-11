@@ -39,8 +39,9 @@ export default {
   computed: {
     getFiltered() {
       const startDate = this.date.range?.start ? new Date(this.date.range.start) : null
-      return this.getExpressions.filter(({ statistic, labels, authors, date }) => {
+      return this.getExpressions.filter(({ statistic, labels, authors, date, notImportant }) => {
         return (
+          !notImportant &&
           (!this.selectedAuthors.length || authors.some(({ _id }) => this.selectedAuthors.includes(_id))) &&
           (!this.selectedLabels.length || labels.some((label) => this.selectedLabels.includes(label))) &&
           (!this.selectedCategory || statistic[this.selectedCategory]) &&

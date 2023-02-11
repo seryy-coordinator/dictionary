@@ -1,5 +1,13 @@
 <template>
-  <va-button color="info" preset="plain" icon="volume_up" :size="size" @click="voiceText()" />
+  <va-button
+    color="info"
+    preset="plain"
+    icon="volume_up"
+    :size="size"
+    @mousedown.stop
+    @touchstart.stop
+    @click="voiceText()"
+  />
 </template>
 
 <script>

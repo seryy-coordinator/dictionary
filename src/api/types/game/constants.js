@@ -1,5 +1,6 @@
 import { game } from './enums'
 import { dictionaryCategory } from '../category'
+import { priorityShuffle } from '../../utilities/array'
 
 export const games = [
   {
@@ -9,6 +10,7 @@ export const games = [
     icon: 'style',
     categories: [dictionaryCategory.TERM],
     componentName: 'Cards',
+    sortCollection: (collection) => priorityShuffle(collection, [`statistic[${dictionaryCategory.TERM}].rate`]),
   },
   {
     key: game.MEMORIZATION,
