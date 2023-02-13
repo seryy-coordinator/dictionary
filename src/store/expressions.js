@@ -57,6 +57,12 @@ const mutations = {
     }
     state.collection.splice(index, 1, item)
   },
+  REMOVE(state, item) {
+    const index = state.collection.findIndex(({ _id }) => _id === item._id)
+    if (index !== -1) {
+      state.collection.splice(index, 1)
+    }
+  },
 }
 
 const actions = {
@@ -74,6 +80,10 @@ const actions = {
     const data = schema(rest)
     await ExpressionsCollection.update(_id, data)
     commit('UPDATE', { _id, ...data })
+  },
+  async removeExpression({ commit }, expression) {
+    await ExpressionsCollection.delete(expression._id)
+    commit('REMOVE', expression)
   },
 }
 

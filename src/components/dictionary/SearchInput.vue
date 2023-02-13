@@ -85,10 +85,10 @@ export default {
   }),
   computed: {
     getEnText() {
-      return this.enText.replace(/\s+/g, ' ')
+      return this.enText.replace(/\s+/g, ' ').toLowerCase()
     },
     getRuText() {
-      return this.ruText.replace(/\s+/g, ' ')
+      return this.ruText.replace(/\s+/g, ' ').toLowerCase()
     },
     getTranslates() {
       const suggestion = this.suggestions.find(({ target }) => target === this.getEnText)

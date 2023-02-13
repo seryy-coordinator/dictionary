@@ -10,16 +10,17 @@
           <li
             v-for="expression in group"
             :key="expression._id"
-            :class="{ 'opacity-40': expression.notImportant }"
             class="flex items-center my-1 p-2 gap-1 bg-gray-50 hover:bg-gray-100"
           >
-            <strong class="font-medium">{{ expression.target }}</strong>
-            <span v-show="config.transcriptionShown && expression.transcription" class="text-gray-600">
-              [{{ expression.transcription }}]
-            </span>
-            <voice-button :expression="expression" />
-            <span class="mx-1">-</span>
-            <span class="text-gray-600">{{ expression.translate }}</span>
+            <div :class="{ 'opacity-40': expression.notImportant }" class="flex items gap-1">
+              <strong class="font-medium">{{ expression.target }}</strong>
+              <span v-show="config.transcriptionShown && expression.transcription" class="text-gray-600">
+                [{{ expression.transcription }}]
+              </span>
+              <voice-button :expression="expression" />
+              <span class="mx-1">-</span>
+              <span class="text-gray-600">{{ expression.translate }}</span>
+            </div>
             <div class="ml-auto text-[10px] text-black text-right">
               <div class="flex items-center gap-1 justify-end">
                 <div v-if="!expression.isPersonal" class="relative z-0">
@@ -49,16 +50,24 @@
                 <p v-for="label in expression.labels" :key="label" class="bg-blue-100 rounded-sm">{{ label }}</p>
               </div>
             </div>
+            <va-button
+              icon="delete_forever"
+              size="small"
+              color="danger"
+              preset="plainOpacity"
+              @click="openConfirmModal(expression)"
+            />
           </li>
         </ul>
       </li>
     </ul>
+    <va-modal ref="modal" stateful message="Are you sure?" title="Expression removing" @ok="remove()" />
   </div>
 </template>
 
 <script>
 import { cloneDeep, groupBy } from 'lodash-es'
-import { get } from 'vuex-pathify'
+import { call, get } from 'vuex-pathify'
 
 import FilterPanel from './filter/FilterPanel.vue'
 import { schema, sortOption, sortOptions, status, datePeriods, dateRangeSchema } from '../../api/types/filter'
@@ -72,6 +81,7 @@ export default {
   },
   data: () => ({
     config: null,
+    selected: null,
   }),
   computed: {
     getGrouped() {
@@ -146,6 +156,14 @@ export default {
         delete LocalStorage.dictionaryConfig
       }
     },
+    openConfirmModal(expression) {
+      this.selected = expression
+      this.$refs.modal.show()
+    },
+    remove() {
+      this.removeExpression(this.selected)
+    },
+    removeExpression: call('expressions/removeExpression'),
   },
 }
 </script>
