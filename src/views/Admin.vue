@@ -3,17 +3,59 @@
     <h1 class="text-xl font-semibold">Admin</h1>
     <!-- <va-button :loading="loading" @click="removeAllExpressions()">Remove all expressions</va-button> -->
     <!-- <va-button :loading="loading" @click="fixAllExpressions()">Fix all expressions</va-button> -->
+    <template v-if="getKeys.length">
+      <va-divider orientation="center">Keys: {{ getKeys.length }}</va-divider>
+      <ul>
+        <li v-for="key in getKeys" :key="key">{{ key }}</li>
+      </ul>
+    </template>
+    <va-divider v-if="activeRu" orientation="center">Active ru: {{ activeRu.name }}</va-divider>
+    <va-divider v-if="activeEn" orientation="center">Active us: {{ activeEn.name }}</va-divider>
+    <ul>
+      <li v-for="(voice, index) in voices" :key="index">{{ voice.lang }} - {{ voice.name }} ({{ voice.voiceURI }})</li>
+    </ul>
+    <va-divider orientation="center">en-US: {{ enVoices.length }}</va-divider>
+    <ul>
+      <li v-for="(voice, index) in enVoices" :key="index">{{ voice.lang }} - {{ voice.name }}</li>
+    </ul>
+    <va-divider orientation="center">Ru-ru: {{ ruVoices.length }}</va-divider>
+    <ul>
+      <li v-for="(voice, index) in ruVoices" :key="index">{{ voice.lang }} - {{ voice.name }}</li>
+    </ul>
   </div>
 </template>
 
 <script>
 import { ExpressionsCollection } from '../api/collections'
+import { voiceData } from '../api/utilities/speech'
+
+function getAllProperties(obj) {
+  var allProps = [],
+    curr = obj
+  do {
+    var props = Object.getOwnPropertyNames(curr)
+    props.forEach(function (prop) {
+      if (allProps.indexOf(prop) === -1) allProps.push(prop)
+    })
+  } while ((curr = Object.getPrototypeOf(curr)))
+  return allProps
+}
 
 export default {
   name: 'Admin',
   data: () => ({
     loading: false,
+    voices: voiceData.all,
+    enVoices: voiceData.US,
+    ruVoices: voiceData.RU,
+    activeEn: voiceData.activeEn,
+    activeRu: voiceData.activeRu,
   }),
+  computed: {
+    getKeys() {
+      return this.voices.length ? getAllProperties(this.voices[0]) : []
+    },
+  },
   methods: {
     async removeAllExpressions() {
       this.loading = true
