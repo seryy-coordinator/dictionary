@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { cloneDeep } from 'lodash-es'
+import { call } from 'vuex-pathify'
 import Card from '../modules/Card.vue'
 
 export default {
@@ -69,13 +71,30 @@ export default {
     nextExpression() {
       if (this.collection.length - 1 > this.activeIndex) {
         this.activeIndex++
+        if (this.activeIndex > 2) {
+          const result = this.results[this.activeIndex - 3]
+          this.saveResult(result)
+        }
       } else {
         this.finish()
+      }
+    },
+    async saveResult({ expression, fail }) {
+      if (fail || !expression.statistic[this.game.statisticId].ready) {
+        const statistic = cloneDeep(expression.statistic)
+        statistic[this.game.statisticId].ready = !fail
+        const fails = statistic[this.game.statisticId].fails || 0
+        statistic[this.game.statisticId].fails = fail ? fails + 1 : 0
+        await this.updateExpression({
+          _id: expression._id,
+          statistic,
+        })
       }
     },
     finish() {
       // ToDo show results
     },
+    updateExpression: call('expressions/updateExpression'),
   },
 }
 </script>

@@ -9,8 +9,13 @@ export const games = [
     description: 'Watch repeat and remember',
     icon: 'style',
     categories: [dictionaryCategory.TERM],
+    statisticId: dictionaryCategory.TERM,
     componentName: 'Cards',
-    sortCollection: (collection) => priorityShuffle(collection, [`statistic[${dictionaryCategory.TERM}].rate`]),
+    sortCollection: (collection) =>
+      priorityShuffle(collection, [
+        `statistic[${dictionaryCategory.TERM}].rate`,
+        `statistic[${dictionaryCategory.TERM}].fails`,
+      ]),
   },
   {
     key: game.MEMORIZATION,

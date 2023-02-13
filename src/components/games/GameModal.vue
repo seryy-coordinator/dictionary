@@ -26,9 +26,16 @@ export default {
     },
   },
   emits: ['close'],
-  computed: {
-    sorted() {
-      return this.game.sortCollection?.(this.collection) ?? this.collection
+  data: () => ({
+    sorted: [],
+  }),
+  watch: {
+    game(newValue) {
+      if (newValue) {
+        this.sorted = newValue.sortCollection?.(this.collection) ?? this.collection
+        return
+      }
+      this.sorted = []
     },
   },
 }
