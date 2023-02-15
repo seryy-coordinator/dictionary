@@ -6,7 +6,7 @@
     </div>
     <education />
     <GameList v-model="selectedGame" :category="selectedCategory" />
-    <GameModal :collection="getFiltered" :game="selectedGame" @close="selectedGame = null" />
+    <GameModal :collection="getFiltered" :game="selectedGame" @change-game="changeGame" @close="selectedGame = null" />
   </div>
 </template>
 
@@ -20,6 +20,7 @@ import GameModal from '../components/games/GameModal.vue'
 
 import { dateSchema } from '../api/types/filter'
 import { dictionaryCategory } from '../api/types/category'
+import { games } from '../api/types/game'
 
 export default {
   name: 'Games',
@@ -56,6 +57,11 @@ export default {
       return null
     },
     getExpressions: get('expressions/getExpressions', false),
+  },
+  methods: {
+    changeGame(key) {
+      this.selectedGame = games.find((game) => game.key == key)
+    },
   },
 }
 </script>

@@ -92,7 +92,21 @@ export default {
       }
     },
     finish() {
-      // ToDo show results
+      const total = [
+        {
+          value: this.successes,
+          label: 'You know',
+          icon: 'done',
+          color: 'success',
+        },
+        {
+          value: this.fails,
+          label: 'New',
+          icon: 'replay',
+          color: 'warning',
+        },
+      ]
+      this.$emit('finish', total)
     },
     updateExpression: call('expressions/updateExpression'),
   },

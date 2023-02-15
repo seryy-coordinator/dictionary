@@ -16,6 +16,7 @@ export const games = [
         `statistic[${dictionaryCategory.TERM}].rate`,
         `statistic[${dictionaryCategory.TERM}].fails`,
       ]),
+    // recommend: game.MEMORIZATION,
   },
   {
     key: game.MEMORIZATION,

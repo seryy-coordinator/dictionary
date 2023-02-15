@@ -3,17 +3,20 @@
     <template #header>
       <h1 class="h-12 text-3xl font-semibold text-gray-700">{{ game.title }}</h1>
     </template>
-    <component :is="game.componentName" :collection="sorted" :game="game" />
+    <TotalResult v-if="total" :total="total" :game="game" @repeat="repeat()" @recommend="recommend()" />
+    <component v-else :is="game.componentName" :collection="sorted" :game="game" @finish="total = $event" />
   </va-modal>
 </template>
 
 <script>
 import Cards from './types/Cards.vue'
+import TotalResult from './modules/TotalResult.vue'
 
 export default {
   name: 'GameModal',
   components: {
     Cards,
+    TotalResult,
   },
   props: {
     collection: {
@@ -25,17 +28,30 @@ export default {
       default: null,
     },
   },
-  emits: ['close'],
+  emits: ['close', 'change-game'],
   data: () => ({
     sorted: [],
+    total: null,
   }),
   watch: {
     game(newValue) {
       if (newValue) {
-        this.sorted = newValue.sortCollection?.(this.collection) ?? this.collection
+        this.initExpressions()
         return
       }
       this.sorted = []
+    },
+  },
+  methods: {
+    initExpressions() {
+      this.sorted = this.game.sortCollection?.(this.collection) ?? this.collection
+    },
+    repeat() {
+      this.initExpressions()
+      this.total = null
+    },
+    recommend() {
+      this.$emit('change-game', this.game.recommend)
     },
   },
 }

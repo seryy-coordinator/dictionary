@@ -37,7 +37,11 @@
           >
             <voice-button :expression="expression" locale="ru" size="medium" @click.stop />
             {{ expression.translate }}
-            <div :class="show ? 'h-0 transition-all mt-1' : 'h-full'" class="absolute inset-0 bg-blue-100">
+            <div
+              :class="show ? 'h-0 transition-all mt-1' : 'h-full'"
+              class="absolute inset-0 bg-blue-100"
+              @click="!animationEnds && showAnswer()"
+            >
               <div class="absolute -inset-1 bg-blue-50 animate-full-pulse"></div>
             </div>
           </div>
@@ -92,7 +96,7 @@ export default {
       }
     },
     contentStyles() {
-      if (this.startPosition && this.currentPosition) {
+      if (this.startPosition && this.currentPosition && Math.abs(this.currentPosition.x - this.startPosition.x) > 100) {
         const { left, width } = this.$refs.card.$el.parentElement.getBoundingClientRect()
         const landingX = this.tempStatus ? window.innerWidth : -width
         const newX = landingX - left
@@ -149,7 +153,9 @@ export default {
       const deltaX = Math.abs(x - this.startPosition.x)
       const deltaY = Math.abs(y - this.startPosition.y)
       if (deltaX < 5 && deltaY < 5) {
-        this.showAnswer()
+        this.startPosition = null
+        this.currentPosition = null
+        return
       } else if (deltaX > 100) {
         const success = x - this.startPosition.x > 0
         this.setStatus(success)
