@@ -3,6 +3,7 @@ import pathify from 'vuex-pathify'
 
 import expressions from './expressions'
 import users from './users'
+import contacts from './contacts'
 
 pathify.options.mapping = 'simple'
 
@@ -11,5 +12,6 @@ export default createStore({
   modules: {
     expressions,
     users,
+    contacts,
   },
 })

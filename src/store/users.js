@@ -73,6 +73,10 @@ const actions = {
     }
     return null
   },
+  async findUserByEmail(_, email) {
+    const users = await UsersCollection.query({ options: [['email', '==', email]] })
+    return users?.[0] || null
+  },
   async createUser({ commit }, { _id, displayName, email, photoURL }) {
     const newUser = schema({
       name: displayName,
