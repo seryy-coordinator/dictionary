@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div class="flex flex-col gap-2 p-4">
-      <CategoryRadio v-model="selectedCategory" />
-      <Filters v-model:dateValue="date" v-model:labelsValue="selectedLabels" v-model:authorsValue="selectedAuthors" />
+    <div class="flex justify-center">
+      <div class="flex flex-col gap-2 py-4">
+        <CategoryRadio v-model="selectedCategory" />
+        <Filters v-model:dateValue="date" v-model:labelsValue="selectedLabels" v-model:authorsValue="selectedAuthors" />
+      </div>
     </div>
     <education />
     <GameList v-model="selectedGame" :category="selectedCategory" />

@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center">
-    <div class="flex flex-col p-4">
+    <div class="flex flex-col py-4">
       <base-checkbox-group
         v-model="selectedCategories"
         :options="getDictionaryCategories"

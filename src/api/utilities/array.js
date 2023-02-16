@@ -9,7 +9,7 @@ export function priorityShuffle(collection, properties, defaultFactor = 0.1) {
     .map((item) => {
       const priority = mappedProperties.reduce((prev, { path, priority }) => {
         const index = rates[path].findIndex((value) => value === (get(item, path) || 0))
-        return prev + index * priority
+        return prev + (index + 1) * priority
       }, 0)
       const random = priority * defaultFactor + Math.random()
       return { item, random }

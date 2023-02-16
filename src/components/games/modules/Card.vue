@@ -63,6 +63,9 @@
 import { voiceEnText, voiceRuText } from '@/api/utilities/speech'
 import swipe from '@/directives/swipe'
 
+const MIN_OFFSET_FOR_ANIMATION = 5
+const OFFSET_FOR_SWIPE = 60
+
 export default {
   name: 'Card',
   directives: {
@@ -96,7 +99,11 @@ export default {
       }
     },
     contentStyles() {
-      if (this.startPosition && this.currentPosition && Math.abs(this.currentPosition.x - this.startPosition.x) > 100) {
+      if (
+        this.startPosition &&
+        this.currentPosition &&
+        Math.abs(this.currentPosition.x - this.startPosition.x) > OFFSET_FOR_SWIPE
+      ) {
         const { left, width } = this.$refs.card.$el.parentElement.getBoundingClientRect()
         const landingX = this.tempStatus ? window.innerWidth : -width
         const newX = landingX - left
@@ -152,11 +159,11 @@ export default {
     stopDragging({ x, y }) {
       const deltaX = Math.abs(x - this.startPosition.x)
       const deltaY = Math.abs(y - this.startPosition.y)
-      if (deltaX < 5 && deltaY < 5) {
+      if (deltaX < MIN_OFFSET_FOR_ANIMATION && deltaY < MIN_OFFSET_FOR_ANIMATION) {
         this.startPosition = null
         this.currentPosition = null
         return
-      } else if (deltaX > 100) {
+      } else if (deltaX > OFFSET_FOR_SWIPE) {
         const success = x - this.startPosition.x > 0
         this.setStatus(success)
       } else {
