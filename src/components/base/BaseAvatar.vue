@@ -1,10 +1,12 @@
 <template>
-  <va-avatar :src="src" :size="getSize" :class="{ [`va-avatar--${size}`]: size }">
+  <va-avatar :src="src" :size="getSize" :color="getAvatarColor" :class="{ [`va-avatar--${size}`]: size }">
     <template v-if="name">{{ getInitials }}</template>
   </va-avatar>
 </template>
 
 <script>
+import { getAvatarColor } from '../../api/utilities'
+
 export default {
   name: 'BaseAvatar',
   props: {
@@ -34,6 +36,9 @@ export default {
     },
     getSize() {
       return this.size === 'tiny' ? '' : this.size
+    },
+    getAvatarColor() {
+      return getAvatarColor(this.name)
     },
   },
 }
