@@ -2,8 +2,8 @@
   <div>
     <FilterPanel v-model="config" :collection="getExpressions" @update:modelValue="saveConfig()" />
     <ul class="py-2 px-8">
-      <li v-for="[key, group] in getGrouped" :key="key">
-        <va-divider v-if="key" orientation="center">
+      <li v-for="[key, group] in getGrouped" :key="key" class="[&:not(:first-child)]:mt-6">
+        <va-divider v-if="key" orientation="center" class="mb-6">
           <span class="px-2">{{ key }}</span>
         </va-divider>
         <ul>

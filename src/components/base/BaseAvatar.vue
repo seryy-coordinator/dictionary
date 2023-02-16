@@ -35,7 +35,7 @@ export default {
       return initials
     },
     getSize() {
-      return this.size === 'tiny' ? '' : this.size
+      return this.size === 'tiny' || this.size === 'huge' ? '' : this.size
     },
     getAvatarColor() {
       return getAvatarColor(this.name)
@@ -50,5 +50,11 @@ export default {
   width: 1.2rem !important;
   min-width: 1.2rem !important;
   height: 1.2rem !important;
+}
+.va-avatar.va-avatar--huge {
+  font-size: 3rem !important;
+  width: 3rem !important;
+  min-width: 6.5rem !important;
+  height: 6.5rem !important;
 }
 </style>

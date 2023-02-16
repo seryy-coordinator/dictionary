@@ -155,12 +155,12 @@ export default {
         this.ruText = expression.translate
         this.$emit('pre-select', expression)
       } else if (expression.target) {
-        this.selected = {
-          target: expression.target,
-          translate: '',
-        }
         this.enText = expression.target
-        this.ruText = ''
+        this.ruText = this.getTranslates.length === 1 ? this.getTranslates[0].translate : ''
+        this.selected = {
+          target: this.enText,
+          translate: this.ruText,
+        }
         requestAnimationFrame(() => {
           document.getElementById('ruText').focus()
         })
