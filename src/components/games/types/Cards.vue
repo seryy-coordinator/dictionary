@@ -8,7 +8,8 @@
     <div class="relative w-96 max-w-full bg-gray-100 rounded mb-10">
       <Card
         :expression="getCurrent"
-        :mute="settings.mute"
+        :mute="mute"
+        :term-main="termMain"
         @animation-finished="nextExpression()"
         @set-status="setStatus"
       />
@@ -20,7 +21,9 @@
 <script>
 import { cloneDeep } from 'lodash-es'
 import { call } from 'vuex-pathify'
+
 import Card from '../modules/Card.vue'
+import { dictionaryCategory } from '@/api/types/category'
 
 export default {
   name: 'Cards',
@@ -36,14 +39,16 @@ export default {
       type: Object,
       default: null,
     },
+    settings: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data: () => ({
     activeIndex: 0,
     results: [],
-    settings: {
-      autoplay: false,
-      mute: false,
-    },
+    autoplay: false,
+    mute: false,
   }),
   computed: {
     getCurrent() {
@@ -57,6 +62,9 @@ export default {
     },
     focusedIndex() {
       return this.results.length - 1
+    },
+    termMain() {
+      return this.game.statisticId === dictionaryCategory.TERM
     },
   },
   methods: {

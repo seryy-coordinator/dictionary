@@ -1,9 +1,10 @@
 <template>
   <va-button
+    :size="size"
     color="info"
     preset="plain"
     icon="volume_up"
-    :size="size"
+    class="va-button--thin"
     @mousedown.stop
     @touchstart.stop
     @click="voiceText()"
@@ -40,3 +41,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.va-button--thin .va-button__content {
+  padding: 0 !important;
+}
+</style>

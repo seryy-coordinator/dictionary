@@ -3,19 +3,29 @@
     <template #header>
       <h1 class="h-12 text-3xl font-semibold text-gray-700">{{ game.title }}</h1>
     </template>
-    <TotalResult v-if="total" :total="total" :game="game" @repeat="repeat()" @recommend="recommend()" />
-    <component v-else :is="game.componentName" :collection="sorted" :game="game" @finish="total = $event" />
+    <GameSettings v-if="!settings" :game="game" @start="start" />
+    <TotalResult v-else-if="total" :total="total" :game="game" @repeat="repeat()" @recommend="recommend()" />
+    <component
+      v-else
+      :is="game.componentName"
+      :collection="sorted"
+      :game="game"
+      :settings="settings"
+      @finish="total = $event"
+    />
   </va-modal>
 </template>
 
 <script>
 import Cards from './types/Cards.vue'
+import GameSettings from './modules/GameSettings.vue'
 import TotalResult from './modules/TotalResult.vue'
 
 export default {
   name: 'GameModal',
   components: {
     Cards,
+    GameSettings,
     TotalResult,
   },
   props: {
@@ -32,11 +42,13 @@ export default {
   data: () => ({
     sorted: [],
     total: null,
+    settings: null,
   }),
   watch: {
     game(newValue) {
       if (newValue) {
-        this.initExpressions()
+        this.settings = null
+        this.total = null
         return
       }
       this.sorted = []
@@ -52,6 +64,10 @@ export default {
     },
     recommend() {
       this.$emit('change-game', this.game.recommend)
+    },
+    start(settings) {
+      this.initExpressions()
+      this.settings = settings
     },
   },
 }

@@ -4,8 +4,8 @@ import { priorityShuffle } from '../../utilities/array'
 
 export const games = [
   {
-    key: game.CARDS,
-    title: 'Cards',
+    key: game.TERM_CARDS,
+    title: 'Cards (Term)',
     description: 'Watch repeat and remember',
     icon: 'style',
     categories: [dictionaryCategory.TERM],
@@ -15,6 +15,21 @@ export const games = [
       priorityShuffle(collection, [
         `statistic[${dictionaryCategory.TERM}].rate`,
         `statistic[${dictionaryCategory.TERM}].fails`,
+      ]),
+    // recommend: game.MEMORIZATION,
+  },
+  {
+    key: game.DEFINITION_CARDS,
+    title: 'Cards (Definition)',
+    description: 'Watch repeat and remember',
+    icon: 'style',
+    categories: [dictionaryCategory.DEFINITION],
+    statisticId: dictionaryCategory.DEFINITION,
+    componentName: 'Cards',
+    sortCollection: (collection) =>
+      priorityShuffle(collection, [
+        `statistic[${dictionaryCategory.DEFINITION}].rate`,
+        `statistic[${dictionaryCategory.DEFINITION}].fails`,
       ]),
     // recommend: game.MEMORIZATION,
   },

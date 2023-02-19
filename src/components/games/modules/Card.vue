@@ -15,9 +15,11 @@
       <va-icon :color="tempStatus ? 'success' : 'warning'" :name="tempStatus ? 'done' : 'replay'" size="4rem" />
     </div>
     <va-card-content :style="contentStyles" class="relative pb-8 bg-blue-50 overflow-hidden">
-      <div class="h-8 flex items-center">
-        <voice-button :expression="expression" size="medium" />
-        <p class="text-sm font-medium">{{ expression.transcription }}</p>
+      <div class="h-8 flex items-center gap-1">
+        <voice-button :expression="expression" :locale="termMain ? 'en' : 'ru'" size="medium" />
+        <span v-if="termMain && expression.transcription" class="text-sm font-medium">
+          [{{ expression.transcription }}]
+        </span>
       </div>
       <div class="flex items-center gap-1 -mx-9">
         <va-button
@@ -30,20 +32,21 @@
         />
         <div class="flex-grow">
           <div class="min-h-[64px] flex items-center justify-center text-center text-lg text-gray-600">
-            {{ expression.target }}
+            {{ termMain ? expression.target : expression.translate }}
           </div>
-          <div
-            class="relative min-h-[64px] flex items-center justify-center text-center border border-blue-100 text-black rounded-sm"
-          >
-            <voice-button :expression="expression" locale="ru" size="medium" @click.stop />
-            {{ expression.translate }}
-            <div
-              :class="show ? 'h-0 transition-all mt-1' : 'h-full'"
-              class="absolute inset-0 bg-blue-100"
-              @click="!animationEnds && showAnswer()"
-            >
-              <div class="absolute -inset-1 bg-blue-50 animate-full-pulse"></div>
+          <div class="relative min-h-[64px] flex flex-col gap-1 items-center text-black">
+            {{ termMain ? expression.translate : expression.target }}
+            <div class="flex items-center gap-1">
+              <voice-button :expression="expression" :locale="termMain ? 'ru' : 'en'" size="medium" @click.stop />
+              <span v-if="!termMain && expression.transcription" class="text-sm font-medium">
+                [{{ expression.transcription }}]
+              </span>
             </div>
+            <div
+              :class="show ? 'h-0 transition-all mt-[2px]' : 'h-full'"
+              class="absolute inset-0 animate-color-pulse"
+              @click="!animationEnds && showAnswer()"
+            ></div>
           </div>
         </div>
         <va-button
@@ -77,6 +80,10 @@ export default {
       required: true,
     },
     mute: {
+      type: Boolean,
+      default: false,
+    },
+    termMain: {
       type: Boolean,
       default: false,
     },
@@ -125,15 +132,15 @@ export default {
         this.currentPosition = null
         this.show = false
         this.animationEnds = false
-        this.voiceTarget()
+        this.voiceSound()
       },
       immediate: true,
     },
   },
   methods: {
     showAnswer() {
-      if (!this.show && !this.mute) {
-        voiceRuText(this.expression.translate)
+      if (!this.show) {
+        this.voiceSound(false)
       }
       this.show = true
     },
@@ -143,11 +150,6 @@ export default {
       setTimeout(() => {
         this.$emit('animation-finished')
       }, 300)
-    },
-    voiceTarget() {
-      if (!this.mute) {
-        voiceEnText(this.expression.target)
-      }
     },
     startDragging({ x, y }) {
       this.animationEnds = false
@@ -185,6 +187,15 @@ export default {
       }
       this.startPosition = null
       this.animationEnds = true
+    },
+    voiceSound(main = true) {
+      if (!this.mute) {
+        if ((main && this.termMain) || (!main && !this.termMain)) {
+          voiceEnText(this.expression.target)
+          return
+        }
+        voiceRuText(this.expression.translate)
+      }
     },
   },
 }
