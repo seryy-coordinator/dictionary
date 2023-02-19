@@ -10,6 +10,7 @@ import {
   limit,
   where,
   deleteDoc,
+  documentId,
 } from 'firebase/firestore/lite'
 
 import { getFirestore } from '../firebase/firestore.js'
@@ -87,6 +88,13 @@ export default class Base {
       condition = [...condition, limit(limitValue)]
     }
     let queryRef = query(this.collectionRef, ...condition)
+    const snapshot = await getDocs(queryRef)
+    return snapshot.docs.map(getElement)
+  }
+
+  async queryByIds(ids) {
+    const options = where(documentId(), 'in', ids)
+    const queryRef = query(this.collectionRef, options)
     const snapshot = await getDocs(queryRef)
     return snapshot.docs.map(getElement)
   }

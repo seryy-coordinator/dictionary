@@ -31,7 +31,7 @@
       size="small"
       color="danger"
       preset="plainOpacity"
-      @click="openConfirmModal(expression)"
+      @click="$emit('remove', expression)"
     />
   </li>
 </template>
@@ -49,6 +49,7 @@ export default {
       required: true,
     },
   },
+  emits: ['remove'],
   computed: {
     transcriptionVisible() {
       return this.transcriptionShown && this.expression.transcription

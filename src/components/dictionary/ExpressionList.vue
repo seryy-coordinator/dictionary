@@ -11,7 +11,8 @@
             v-for="expression in group"
             :key="expression._id"
             :expression="expression"
-            :transcription-visible="config.transcriptionVisible"
+            :transcription-shown="config.transcriptionShown"
+            @remove="openConfirmModal"
           />
         </ul>
       </li>
