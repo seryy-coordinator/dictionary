@@ -23,7 +23,7 @@ export const relationStatuses = [
   },
   {
     key: relationStatus.DISABLED,
-    icon: '',
-    color: '',
+    icon: 'person_off',
+    color: 'danger',
   },
 ]

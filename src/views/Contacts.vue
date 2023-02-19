@@ -29,23 +29,40 @@
     </div>
     <education class="my-4" />
     <ul class="flex flex-col max-w-[400px] mx-auto px-2">
-      <li v-for="{ contactId, contact, relationStatus } in getContacts" :key="contactId">
+      <li v-for="item in getContacts" :key="item.contactId">
         <div
-          v-if="contact"
-          class="flex items-center gap-2 bg-gray-50 hover:bg-blue-50 py-2 px-3 rounded font-medium my-2"
-          @click="openProfile(contactId)"
+          v-if="item.contact"
+          :class="{ 'hover:bg-blue-50 cursor-pointer': !item.especially }"
+          class="flex items-center gap-2 bg-gray-50 py-2 px-3 rounded font-medium my-2"
+          @click="!item.especially && openProfile(item.contactId)"
         >
-          <base-avatar :src="contact.picture" :name="contact.name" size="small" />
-          <span>{{ contact.name }}</span>
-          <va-chip :color="relationStatus.color" :icon="relationStatus.icon" size="small" square class="mr-auto" />
+          <div :class="{ 'opacity-40': item.especially && !item.incoming }" class="flex items-center gap-2 mr-auto">
+            <va-chip
+              v-if="item.especially"
+              :color="item.statusDetails.color"
+              :icon="item.statusDetails.icon"
+              size="small"
+              square
+              class="va-chip--icon"
+            />
+            <base-avatar :src="item.contact.picture" :name="item.contact.name" size="small" />
+            <span>{{ item.contact.name }}</span>
+          </div>
 
-          <va-button
-            icon="delete_forever"
-            size="small"
-            color="danger"
-            preset="plainOpacity"
-            @click.stop="openConfirmModal(contact)"
-          />
+          <div class="flex items-center gap-1">
+            <template v-if="item.especially && item.incoming">
+              <va-button icon="check_circle_outline" size="small" color="success" @click.stop="approve(item)" />
+              <va-button icon="highlight_off" size="small" color="warning" @click.stop="reject(item)" />
+            </template>
+            <va-button
+              v-else
+              icon="delete_forever"
+              size="small"
+              color="danger"
+              preset="plainOpacity"
+              @click.stop="openConfirmModal(item.contact)"
+            />
+          </div>
         </div>
       </li>
     </ul>
@@ -55,7 +72,7 @@
 
 <script>
 import { call, get } from 'vuex-pathify'
-import { relationStatuses } from '../api/types/relation'
+import { relationStatus, relationStatuses } from '../api/types/relation'
 
 export default {
   name: 'Contacts',
@@ -78,25 +95,26 @@ export default {
       }
       return null
     },
+    currentUserDisabled() {
+      return this.currentRelationship?.key === relationStatus.DISABLED
+    },
     getContacts() {
-      return this.activeContactRelations
-        .slice(this.startPosition, this.startPosition + this.size)
-        .map(({ contactId, status }) => {
-          const contact = this.users.find(({ _id }) => _id === contactId)
-          const relationStatus = relationStatuses.find(({ key }) => key === status)
-          return {
-            contact,
-            contactId,
-            status,
-            relationStatus,
-          }
-        })
+      return this.activeContactRelations.slice(this.startPosition, this.startPosition + this.size).map((item) => {
+        const contact = this.users.find(({ _id }) => _id === item.contactId)
+        const statusDetails = relationStatuses.find(({ key }) => key === item.status)
+        return {
+          ...item,
+          contact,
+          statusDetails,
+          especially: item.status !== relationStatus.APPROVE,
+        }
+      })
     },
     searchDisabled() {
       return !this.email || this.currentUser.email === this.email
     },
     currentUser: get('users/user', false),
-    ...get('relations', ['activeContactRelations', 'getContactRelations', 'users'], false),
+    ...get('relations', ['activeContactRelations', 'getContactRelations', 'users', 'loading'], false),
   },
   watch: {
     email() {
@@ -105,7 +123,7 @@ export default {
   },
   async created() {
     this.loaded = true
-    await this.fetchAllRelations()
+    await this.loading
     await this.loadContacts()
     this.loaded = false
   },
@@ -115,7 +133,7 @@ export default {
       this.notFound = !this.newContact
     },
     add() {
-      this.addContact(this.newContact)
+      this.addRelation(this.newContact)
       this.$vaToast.init({
         message: `A request to add to contacts was sent to the user '${this.newContact.name}'.`,
         position: 'bottom-right',
@@ -137,10 +155,20 @@ export default {
     remove() {
       this.removeContact(this.selected)
     },
-    ...call('relations', ['fetchAllRelations', 'loadContacts', 'addContact', 'removeContact']),
+    approve(relation) {
+      this.updateRelation({ _id: relation._id, status: relationStatus.APPROVE })
+    },
+    reject(relation) {
+      this.updateRelation({ _id: relation._id, status: relationStatus.REJECT })
+    },
+    ...call('relations', ['loadContacts', 'addRelation', 'removeContact', 'updateRelation']),
     ...call('users', ['findUserByEmail']),
   },
 }
 </script>
 
-<style></style>
+<style>
+.va-chip--icon .va-chip__content {
+  display: none;
+}
+</style>

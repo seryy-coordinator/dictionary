@@ -20,9 +20,11 @@ export default {
   },
   created() {
     this.fetchAllExpressions()
+    this.fetchAllRelations()
   },
   methods: {
     fetchAllExpressions: call('expressions/fetchAll'),
+    fetchAllRelations: call('relations/fetchAllRelations'),
   },
 }
 </script>

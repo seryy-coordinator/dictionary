@@ -5,18 +5,19 @@ import { relationStatus, schema } from '../api/types/relation'
 const state = () => ({
   collection: [],
   users: [],
+  loading: null,
 })
 
 const getters = {
   ...make.getters(state),
   getRelations: ({ collection }, _, rootGetters) => {
     const ownerId = rootGetters.users.user._id
-    return collection.map(({ status, userIds, studies }) => {
-      const contactId = userIds.find((id) => id !== ownerId)
+    return collection.map((item) => {
+      const contactId = item.userIds.find((id) => id !== ownerId)
       return {
-        status,
+        ...item,
         contactId,
-        studies,
+        incoming: item.userIds[0] !== ownerId,
       }
     })
   },
@@ -31,6 +32,10 @@ const mutations = {
   ...make.mutations(state),
   ADD_RELATIONSHIP(state, item) {
     state.collection.unshift(item)
+  },
+  UPDATE_RELATIONSHIP(state, { _id, status }) {
+    const selectedItem = state.collection.find((item) => item._id === _id)
+    selectedItem.status = status
   },
   ADD_CONTACT(state, item) {
     state.users.push(item)
@@ -51,9 +56,11 @@ const mutations = {
 const actions = {
   async fetchAllRelations({ commit, rootGetters }) {
     const ownerId = rootGetters['users/user']._id
-    const relations = await RelationsCollection.query({
+    const loading = RelationsCollection.query({
       options: [['userIds', 'array-contains', ownerId]],
     })
+    commit('SET_LOADING', loading)
+    const relations = await loading
     commit('SET_COLLECTION', relations)
   },
   async loadContacts({ commit, getters }, { start = 0, size = 10 } = {}) {
@@ -66,15 +73,23 @@ const actions = {
       commit('ADD_CONTACTS', contacts)
     }
   },
-  async addContact({ commit, rootGetters }, contact) {
+  async loadProfile({ commit }, userId) {
+    const user = await UsersCollection.read(userId)
+    commit('ADD_CONTACT', user)
+  },
+  async addRelation({ commit, rootGetters }, contact) {
     const ownerId = rootGetters['users/user']._id
     const data = schema({
       userIds: [ownerId, contact._id],
       status: relationStatus.REQUEST,
     })
-    const newRelationship = await RelationsCollection.create(data, null, true)
+    const newRelation = await RelationsCollection.create(data, null, true)
     commit('ADD_CONTACT', contact)
-    commit('ADD_RELATIONSHIP', newRelationship)
+    commit('ADD_RELATIONSHIP', newRelation)
+  },
+  async updateRelation({ commit }, { _id, status }) {
+    await RelationsCollection.update(_id, { status })
+    commit('UPDATE_RELATIONSHIP', { _id, status })
   },
 }
 
