@@ -1,6 +1,6 @@
 <template>
-  <div class="flex items-center gap-1">
-    <div v-if="label" class="mr-1 font-medium text-sm">{{ label }}:</div>
+  <div class="flex items-center justify-center gap-1">
+    <div v-if="label" class="mr-1 font-semibold text-sm">{{ label }}:</div>
     <span v-if="icon" class="mr-1 material-icons">{{ icon }}</span>
     <div
       v-for="option in getOptions"

@@ -3,7 +3,7 @@
     <template #header>
       <h1 class="h-12 text-3xl font-semibold text-gray-700">{{ game.title }}</h1>
     </template>
-    <GameSettings v-if="!settings" :game="game" @start="start" />
+    <GameSettings v-if="!settings" :game="game" :collection="collection" @start="start" />
     <TotalResult v-else-if="total" :total="total" :game="game" @repeat="repeat()" @recommend="recommend()" />
     <component
       v-else
@@ -56,7 +56,8 @@ export default {
   },
   methods: {
     initExpressions() {
-      this.sorted = this.game.sortCollection?.(this.collection) ?? this.collection
+      const collection = this.game.sortCollection?.(this.collection) ?? this.collection
+      this.sorted = this.settings.number ? collection.slice(0, this.settings.number) : collection
     },
     repeat() {
       this.initExpressions()
@@ -66,8 +67,8 @@ export default {
       this.$emit('change-game', this.game.recommend)
     },
     start(settings) {
-      this.initExpressions()
       this.settings = settings
+      this.initExpressions()
     },
   },
 }

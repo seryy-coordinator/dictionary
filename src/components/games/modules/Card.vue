@@ -84,9 +84,9 @@ export default {
       type: Object,
       required: true,
     },
-    mute: {
-      type: Boolean,
-      default: false,
+    mutes: {
+      type: Array,
+      default: () => [],
     },
     termMain: {
       type: Boolean,
@@ -200,11 +200,11 @@ export default {
       this.animationEnds = true
     },
     voiceSound(main = true) {
-      if (!this.mute) {
-        if ((main && this.termMain) || (!main && !this.termMain)) {
-          voiceEnText(this.expression.target)
-          return
-        }
+      if (!this.mutes.includes('term') && ((main && this.termMain) || (!main && !this.termMain))) {
+        voiceEnText(this.expression.target)
+        return
+      }
+      if (!this.mutes.includes('definition')) {
         voiceRuText(this.expression.translate)
       }
     },

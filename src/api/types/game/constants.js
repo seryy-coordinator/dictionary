@@ -16,6 +16,7 @@ export const games = [
         `statistic[${dictionaryCategory.TERM}].rate`,
         `statistic[${dictionaryCategory.TERM}].fails`,
       ]),
+    settings: { number: 30, mutes: [] },
     // recommend: game.MEMORIZATION,
   },
   {
@@ -31,6 +32,7 @@ export const games = [
         `statistic[${dictionaryCategory.DEFINITION}].rate`,
         `statistic[${dictionaryCategory.DEFINITION}].fails`,
       ]),
+    settings: { number: 30, mutes: [] },
     // recommend: game.MEMORIZATION,
   },
   {

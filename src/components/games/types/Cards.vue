@@ -8,7 +8,7 @@
     <div class="relative w-96 max-w-full bg-gray-100 rounded mb-10">
       <Card
         :expression="getCurrent"
-        :mute="mute"
+        :mutes="mutes"
         :term-main="termMain"
         @animation-finished="nextExpression()"
         @set-status="setStatus"
@@ -41,15 +41,17 @@ export default {
     },
     settings: {
       type: Object,
-      default: () => ({}),
+      required: true,
     },
   },
-  data: () => ({
-    activeIndex: 0,
-    results: [],
-    autoplay: false,
-    mute: false,
-  }),
+  data() {
+    return {
+      activeIndex: 0,
+      results: [],
+      autoplay: false,
+      mutes: cloneDeep(this.settings.mutes),
+    }
+  },
   computed: {
     getCurrent() {
       return this.collection[this.activeIndex]
