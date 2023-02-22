@@ -26,16 +26,21 @@
           color="warning"
           round
           icon="replay"
-          class="opacity-20 hover:opacity-100 w-14 z-10 transition-opacity"
+          class="opacity-20 hover:opacity-100 w-14 z-10 transition-opacity flex-shrink-0"
           @mousedown.stop="setStatus(false)"
           @touchstart.stop
         />
         <div class="flex-grow">
-          <div class="min-h-[64px] flex items-center justify-center text-center text-lg text-gray-600">
-            {{ termMain ? expression.target : expression.translate }}
+          <div
+            :class="{ 'text-sm break-words': getQuestion.length > 25 }"
+            class="h-16 flex items-center justify-center text-center text-lg text-gray-600"
+          >
+            {{ getQuestion }}
           </div>
-          <div class="relative min-h-[64px] flex flex-col gap-1 items-center text-black">
-            {{ termMain ? expression.translate : expression.target }}
+          <div class="relative h-[68px] flex flex-col gap-1 items-center text-black">
+            <p :class="{ 'text-sm break-words': getAnswer.length > 25 }" class="multiline-ellipsis text-center">
+              {{ getAnswer }}
+            </p>
             <div class="flex items-center gap-1">
               <voice-button :expression="expression" :locale="termMain ? 'ru' : 'en'" size="medium" @click.stop />
               <span v-if="!termMain && expression.transcription" class="text-sm font-medium">
@@ -53,7 +58,7 @@
           color="success"
           round
           icon="done"
-          class="opacity-20 hover:opacity-100 w-14 z-10 transition-opacity"
+          class="opacity-20 hover:opacity-100 w-14 z-10 transition-opacity flex-shrink-0"
           @mousedown.stop="setStatus(true)"
           @touchstart.stop
         />
@@ -123,6 +128,12 @@ export default {
     },
     tempStatus() {
       return this.currentPosition && this.startPosition ? this.currentPosition.x - this.startPosition.x > 0 : false
+    },
+    getQuestion() {
+      return this.termMain ? this.expression.target : this.expression.translate
+    },
+    getAnswer() {
+      return this.termMain ? this.expression.translate : this.expression.target
     },
   },
   watch: {
