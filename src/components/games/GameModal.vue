@@ -20,6 +20,7 @@
 import Cards from './types/Cards.vue'
 import GameSettings from './modules/GameSettings.vue'
 import TotalResult from './modules/TotalResult.vue'
+import { toggleMobileFullScreen } from '../../api/utilities/device.js'
 
 export default {
   name: 'GameModal',
@@ -46,6 +47,7 @@ export default {
   }),
   watch: {
     game(newValue) {
+      toggleMobileFullScreen()
       if (newValue) {
         this.settings = null
         this.total = null

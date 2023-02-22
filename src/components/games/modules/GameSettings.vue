@@ -1,6 +1,5 @@
 <template>
   <div class="h-full flex flex-col justify-center select-none gap-3 max-w-md mx-auto">
-    <va-button @click="full()" block> Full screen </va-button>
     <va-select
       v-if="numberVisible"
       v-model="settings.number"
@@ -71,9 +70,6 @@ export default {
     start() {
       LocalStorage[this.game.key] = this.settings
       this.$emit('start', this.settings)
-    },
-    full() {
-      document.documentElement.requestFullscreen()
     },
   },
 }
