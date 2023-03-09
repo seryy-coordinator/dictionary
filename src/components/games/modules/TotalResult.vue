@@ -10,7 +10,8 @@
         </p>
       </div>
     </div>
-    <va-button @click="$emit('repeat')" block> Repeat game </va-button>
+    <va-button @click="$emit('finish')" block> Finish </va-button>
+    <va-button v-if="repeatVisible" @click="$emit('repeat')" block> Repeat game </va-button>
     <va-button v-if="recommended" preset="secondary" border-color="primary" block @click="$emit('recommend')">
       Run `{{ recommended.title }}` game
     </va-button>
@@ -32,10 +33,13 @@ export default {
       default: null,
     },
   },
-  emits: ['recommend', 'repeat'],
+  emits: ['recommend', 'repeat', 'finish'],
   computed: {
     recommended() {
       return this.game.recommend ? games.find((game) => game.key == this.game.recommend) : null
+    },
+    repeatVisible() {
+      return !!this.total.find(({ repeat }) => repeat).expressions.length
     },
   },
 }

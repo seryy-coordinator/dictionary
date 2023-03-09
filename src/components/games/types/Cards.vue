@@ -43,6 +43,10 @@ export default {
       type: Object,
       required: true,
     },
+    withoutStatistic: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -90,7 +94,7 @@ export default {
       }
     },
     async saveResult({ expression, fail }) {
-      if (fail || !expression.statistic[this.game.statisticId].ready) {
+      if (!this.withoutStatistic && (fail || !expression.statistic[this.game.statisticId].ready)) {
         const statistic = cloneDeep(expression.statistic)
         statistic[this.game.statisticId].ready = !fail
         const fails = statistic[this.game.statisticId].fails || 0
@@ -108,12 +112,15 @@ export default {
           label: 'You know',
           icon: 'done',
           color: 'success',
+          expressions: this.results.filter(({ fail }) => !fail),
         },
         {
           value: this.fails,
           label: 'New',
           icon: 'replay',
           color: 'warning',
+          repeat: true,
+          expressions: this.results.filter(({ fail }) => fail),
         },
       ]
       this.$emit('finish', total)
